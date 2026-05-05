@@ -3,16 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel – BD Viral Hub</title>
+<title>Admin – BD Viral Hub</title>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import {
-    getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc,
-    query, orderBy, serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-  // ── তোমার Firebase Config এখানে দাও ──
+<script>
+  // ✅ তোমার Firebase Config এখানে বসাও (index.html এর মতোই)
   const firebaseConfig = {
   apiKey: "AIzaSyDTwcpAg0t_55jE0kAixfvew0CHco-VrXQ",
   authDomain: "bd-viral-753c9.firebaseapp.com",
@@ -22,449 +19,152 @@
   messagingSenderId: "486061827482",
   appId: "1:486061827482:web:99413f4c5823ced2e90623"
 };
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  // Expose to global
-  window._db = db;
-  window._fs = { collection, addDoc, getDocs, deleteDoc, doc, updateDoc, query, orderBy, serverTimestamp };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
 </script>
 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+  :root { --red:#e5002b; --bg:#0d0d0d; --panel:#161616; --border:#2a2a2a; --text:#f0f0f0; --muted:#888; --green:#00c853; --yellow:#f5a623; --blue:#00bcd4; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans-serif; min-height:100vh; }
 
-  :root {
-    --red: #e5002b;
-    --bg: #0d0d0d;
-    --panel: #161616;
-    --border: #2a2a2a;
-    --text: #f0f0f0;
-    --muted: #888;
-    --green: #00c853;
-    --yellow: #f5a623;
-    --blue: #00bcd4;
-  }
+  /* LOGIN */
+  .login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; background:radial-gradient(ellipse at center,#1a0008,#0d0d0d 70%); }
+  .login-box { background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:40px 32px; width:100%; max-width:360px; box-shadow:0 20px 60px rgba(229,0,43,.15); }
+  .login-logo { text-align:center; margin-bottom:28px; }
+  .login-logo h1 { font-size:28px; font-weight:700; color:var(--red); }
+  .login-logo p { color:var(--muted); font-size:13px; margin-top:4px; }
+  .login-err { color:var(--red); font-size:13px; text-align:center; margin-top:10px; display:none; }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+  /* FORM */
+  .fg { margin-bottom:16px; }
+  .fg label { display:block; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+  .fg input, .fg select, .fg textarea { width:100%; background:#1e1e1e; border:1px solid var(--border); border-radius:8px; padding:10px 12px; color:var(--text); font-family:'Hind Siliguri',sans-serif; font-size:14px; outline:none; transition:border-color .2s; }
+  .fg input:focus, .fg select:focus, .fg textarea:focus { border-color:var(--red); }
+  .fg textarea { resize:vertical; min-height:70px; }
+  .fg select option { background:#1e1e1e; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Hind Siliguri', sans-serif;
-    min-height: 100vh;
-  }
+  .btn { padding:10px 18px; border-radius:8px; border:none; font-family:'Hind Siliguri',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:opacity .2s,transform .1s; display:inline-flex; align-items:center; gap:6px; }
+  .btn:active { transform:scale(.97); }
+  .btn-red { background:var(--red); color:#fff; width:100%; justify-content:center; }
+  .btn-green { background:var(--green); color:#000; }
+  .btn-yellow { background:var(--yellow); color:#000; }
+  .btn-ghost { background:transparent; border:1px solid var(--border); color:var(--text); }
+  .btn-sm-del { background:var(--red); color:#fff; font-size:11px; padding:5px 10px; border:none; border-radius:6px; cursor:pointer; font-family:'Hind Siliguri',sans-serif; font-weight:600; }
+  .btn-sm-edit { background:var(--yellow); color:#000; font-size:11px; padding:5px 10px; border:none; border-radius:6px; cursor:pointer; font-family:'Hind Siliguri',sans-serif; font-weight:600; }
 
-  /* ── LOGIN ── */
-  .login-screen {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: radial-gradient(ellipse at center, #1a0008 0%, #0d0d0d 70%);
-  }
+  .cb-group { display:flex; gap:14px; flex-wrap:wrap; margin-top:4px; }
+  .cb-item { display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; }
+  .cb-item input { width:15px; height:15px; accent-color:var(--red); cursor:pointer; }
 
-  .login-box {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 40px 32px;
-    width: 100%;
-    max-width: 360px;
-    box-shadow: 0 20px 60px rgba(229,0,43,0.15);
-  }
+  /* ADMIN LAYOUT */
+  .admin-screen { display:none; }
+  .admin-nav { background:#111; border-bottom:2px solid var(--red); padding:0 16px; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:100; gap:8px; flex-wrap:wrap; }
+  .admin-nav-logo { font-size:16px; font-weight:700; color:var(--red); white-space:nowrap; }
+  .admin-nav-logo span { color:var(--text); }
+  .tabs { display:flex; gap:4px; overflow-x:auto; }
+  .tab-btn { padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:600; border:none; background:transparent; color:var(--muted); white-space:nowrap; font-family:'Hind Siliguri',sans-serif; }
+  .tab-btn.active { background:var(--red); color:#fff; }
+  .tab-btn:hover:not(.active) { background:var(--border); color:var(--text); }
 
-  .login-logo {
-    text-align: center;
-    margin-bottom: 28px;
-  }
+  .admin-body { max-width:860px; margin:0 auto; padding:20px 16px; }
+  .tab-content { display:none; }
+  .tab-content.active { display:block; }
 
-  .login-logo h1 {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--red);
-    letter-spacing: 1px;
-  }
+  /* STATS */
+  .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:20px; }
+  .stat-card { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center; }
+  .stat-num { font-size:28px; font-weight:700; color:var(--red); }
+  .stat-label { font-size:11px; color:var(--muted); margin-top:4px; }
 
-  .login-logo p { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  /* CARDS */
+  .form-card { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:20px; }
+  .form-card h3 { font-size:15px; font-weight:700; margin-bottom:16px; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  @media(max-width:480px){ .form-row { grid-template-columns:1fr; } }
 
-  .form-group { margin-bottom: 16px; }
+  /* VIDEO LIST */
+  .video-item { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:12px; display:flex; gap:12px; align-items:flex-start; margin-bottom:10px; }
+  .vi-thumb { width:72px; height:48px; border-radius:6px; object-fit:cover; background:#222; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:20px; overflow:hidden; }
+  .vi-thumb img { width:100%; height:100%; object-fit:cover; }
+  .vi-info { flex:1; min-width:0; }
+  .vi-title { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:6px; }
+  .vi-meta { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+  .sec-badge { font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; text-transform:uppercase; }
+  .sec-popular { background:rgba(245,166,35,.2); color:var(--yellow); }
+  .sec-today { background:rgba(0,200,83,.2); color:var(--green); }
+  .sec-trending { background:rgba(229,0,43,.2); color:var(--red); }
+  .vi-actions { display:flex; gap:6px; margin-top:8px; }
 
-  .form-group label {
-    display: block;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 6px;
-  }
+  /* MODAL */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:500; overflow-y:auto; padding:20px; }
+  .modal-overlay.active { display:flex; align-items:center; justify-content:center; }
+  .modal-box { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:24px; width:100%; max-width:460px; }
+  .modal-box h3 { font-size:15px; font-weight:700; margin-bottom:18px; }
+  .modal-actions { display:flex; gap:10px; margin-top:18px; justify-content:flex-end; }
 
-  .form-group input, .form-group select, .form-group textarea {
-    width: 100%;
-    background: #1e1e1e;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 12px;
-    color: var(--text);
-    font-family: 'Hind Siliguri', sans-serif;
-    font-size: 14px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
+  /* TOAST */
+  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:#1e1e1e; border:1px solid var(--border); color:var(--text); padding:12px 20px; border-radius:10px; font-size:13px; font-weight:600; z-index:9999; transition:transform .3s; white-space:nowrap; max-width:90vw; }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+  .toast.ok { border-color:var(--green); }
+  .toast.err { border-color:var(--red); }
 
-  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
-    border-color: var(--red);
-  }
+  .settings-card { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:16px; }
+  .settings-card h3 { font-size:15px; font-weight:700; margin-bottom:16px; }
 
-  .form-group textarea { resize: vertical; min-height: 80px; }
-
-  .form-group select option { background: #1e1e1e; }
-
-  .btn {
-    padding: 11px 20px;
-    border-radius: 8px;
-    border: none;
-    font-family: 'Hind Siliguri', sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: opacity 0.2s, transform 0.1s;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .btn:active { transform: scale(0.97); }
-  .btn-red { background: var(--red); color: #fff; width: 100%; justify-content: center; }
-  .btn-green { background: var(--green); color: #000; }
-  .btn-yellow { background: var(--yellow); color: #000; }
-  .btn-blue { background: var(--blue); color: #000; }
-  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
-  .btn-danger { background: var(--red); color: #fff; font-size: 12px; padding: 6px 12px; }
-  .btn-edit { background: var(--yellow); color: #000; font-size: 12px; padding: 6px 12px; }
-
-  .login-error {
-    color: var(--red);
-    font-size: 12px;
-    text-align: center;
-    margin-top: 8px;
-    display: none;
-  }
-
-  /* ── ADMIN LAYOUT ── */
-  .admin-screen { display: none; }
-
-  .admin-nav {
-    background: #111;
-    border-bottom: 2px solid var(--red);
-    padding: 0 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 60px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-
-  .admin-nav-logo { font-size: 18px; font-weight: 700; color: var(--red); }
-  .admin-nav-logo span { color: var(--text); }
-
-  .admin-nav-tabs { display: flex; gap: 4px; }
-
-  .nav-tab {
-    padding: 6px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 500;
-    border: none;
-    background: transparent;
-    color: var(--muted);
-    transition: all 0.2s;
-    font-family: 'Hind Siliguri', sans-serif;
-  }
-
-  .nav-tab.active { background: var(--red); color: #fff; }
-  .nav-tab:hover:not(.active) { background: var(--border); color: var(--text); }
-
-  .admin-body { max-width: 900px; margin: 0 auto; padding: 24px 20px; }
-
-  /* ── TABS ── */
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
-
-  /* ── STATS CARDS ── */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-
-  .stat-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-  }
-
-  .stat-num {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--red);
-  }
-
-  .stat-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
-
-  /* ── ADD VIDEO FORM ── */
-  .form-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 24px;
-  }
-
-  .form-card h3 {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
-
-  .checkbox-group {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    margin-top: 4px;
-  }
-
-  .checkbox-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    cursor: pointer;
-    font-size: 13px;
-  }
-
-  .checkbox-item input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    accent-color: var(--red);
-    cursor: pointer;
-  }
-
-  /* ── VIDEO TABLE ── */
-  .video-table-wrap {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  .table-header {
-    padding: 16px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .table-header h3 { font-size: 15px; font-weight: 600; }
-
-  .video-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .video-table th {
-    background: #1a1a1a;
-    padding: 10px 14px;
-    text-align: left;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--muted);
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .video-table td {
-    padding: 10px 14px;
-    font-size: 13px;
-    border-bottom: 1px solid #1e1e1e;
-    vertical-align: middle;
-  }
-
-  .video-table tr:last-child td { border-bottom: none; }
-  .video-table tr:hover td { background: rgba(255,255,255,0.02); }
-
-  .td-thumb {
-    width: 60px;
-    height: 40px;
-    object-fit: cover;
-    border-radius: 4px;
-    background: #222;
-    display: block;
-  }
-
-  .section-badge {
-    font-size: 10px;
-    font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 4px;
-    text-transform: uppercase;
-  }
-
-  .section-popular { background: rgba(245,166,35,0.2); color: var(--yellow); }
-  .section-today { background: rgba(0,200,83,0.2); color: var(--green); }
-  .section-trending { background: rgba(229,0,43,0.2); color: var(--red); }
-
-  .action-btns { display: flex; gap: 6px; align-items: center; }
-
-  /* ── EDIT MODAL ── */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    z-index: 500;
-    overflow-y: auto;
-  }
-
-  .modal-overlay.active { display: flex; align-items: center; justify-content: center; padding: 20px; }
-
-  .modal-box {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 28px;
-    width: 100%;
-    max-width: 480px;
-  }
-
-  .modal-box h3 { font-size: 16px; font-weight: 600; margin-bottom: 20px; }
-
-  .modal-actions { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
-
-  /* ── TOAST ── */
-  .toast {
-    position: fixed;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%) translateY(80px);
-    background: #1e1e1e;
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 12px 20px;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 500;
-    z-index: 9999;
-    transition: transform 0.3s;
-    white-space: nowrap;
-    max-width: 90vw;
-  }
-
-  .toast.show { transform: translateX(-50%) translateY(0); }
-  .toast.success { border-color: var(--green); }
-  .toast.error { border-color: var(--red); }
-
-  /* ── SETTINGS ── */
-  .settings-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 16px;
-  }
-
-  .settings-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
-
-  .empty-row td { text-align: center; padding: 30px; color: var(--muted); }
+  .list-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .list-header h3 { font-size:15px; font-weight:700; }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════ LOGIN ═══════════════ -->
+<!-- LOGIN -->
 <div class="login-screen" id="loginScreen">
   <div class="login-box">
     <div class="login-logo">
       <h1>🎬 BD VIRAL</h1>
       <p>Admin Panel – শুধুমাত্র Admin এর জন্য</p>
     </div>
-    <div class="form-group">
-      <label>Password</label>
-      <input type="password" id="loginPass" placeholder="পাসওয়ার্ড দিন" onkeydown="if(event.key==='Enter') doLogin()">
+    <div class="fg">
+      <label>পাসওয়ার্ড</label>
+      <input type="password" id="loginPass" placeholder="পাসওয়ার্ড দিন" onkeydown="if(event.key==='Enter')doLogin()">
     </div>
     <button class="btn btn-red" onclick="doLogin()">🔑 লগইন করুন</button>
-    <div class="login-error" id="loginError">❌ ভুল পাসওয়ার্ড!</div>
+    <div class="login-err" id="loginErr">❌ ভুল পাসওয়ার্ড!</div>
   </div>
 </div>
 
-<!-- ═══════════════ ADMIN ═══════════════ -->
+<!-- ADMIN -->
 <div class="admin-screen" id="adminScreen">
-
-  <!-- Top Nav -->
   <div class="admin-nav">
-    <div class="admin-nav-logo">BD <span>VIRAL</span> Admin</div>
-    <div class="admin-nav-tabs">
-      <button class="nav-tab active" onclick="switchTab('dashboard')">📊 Dashboard</button>
-      <button class="nav-tab" onclick="switchTab('videos')">🎬 Videos</button>
-      <button class="nav-tab" onclick="switchTab('add')">➕ Add</button>
-      <button class="nav-tab" onclick="switchTab('settings')">⚙️ Settings</button>
-      <button class="nav-tab" onclick="doLogout()">🚪 Logout</button>
+    <div class="admin-nav-logo">BD <span>VIRAL</span></div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
+      <button class="tab-btn" onclick="switchTab('videos',this)">🎬 Videos</button>
+      <button class="tab-btn" onclick="switchTab('add',this)">➕ Add</button>
+      <button class="tab-btn" onclick="switchTab('settings',this)">⚙️ Settings</button>
+      <button class="tab-btn" onclick="doLogout()">🚪 Logout</button>
     </div>
   </div>
 
   <div class="admin-body">
 
-    <!-- ── DASHBOARD TAB ── -->
+    <!-- DASHBOARD -->
     <div class="tab-content active" id="tab-dashboard">
       <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-num" id="statTotal">0</div>
-          <div class="stat-label">মোট ভিডিও</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num" id="statPopular">0</div>
-          <div class="stat-label">Most Popular</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num" id="statToday">0</div>
-          <div class="stat-label">Today New</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-num" id="statTrending">0</div>
-          <div class="stat-label">Trending</div>
-        </div>
+        <div class="stat-card"><div class="stat-num" id="stTotal">0</div><div class="stat-label">মোট ভিডিও</div></div>
+        <div class="stat-card"><div class="stat-num" id="stPop">0</div><div class="stat-label">Most Popular</div></div>
+        <div class="stat-card"><div class="stat-num" id="stToday">0</div><div class="stat-label">Today New</div></div>
+        <div class="stat-card"><div class="stat-num" id="stTrend">0</div><div class="stat-label">Trending</div></div>
       </div>
 
       <div class="form-card">
-        <h3>🚀 Quick Add Video</h3>
-        <div class="form-group">
-          <label>ভিডিও টাইটেল</label>
-          <input type="text" id="qTitle" placeholder="বাংলায় টাইটেল লিখুন">
-        </div>
+        <h3>⚡ Quick Add Video</h3>
+        <div class="fg"><label>ভিডিও টাইটেল *</label><input type="text" id="qTitle" placeholder="বাংলায় টাইটেল লিখুন"></div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Video URL / Link</label>
-            <input type="url" id="qUrl" placeholder="YouTube, Drive, Direct link">
-          </div>
-          <div class="form-group">
-            <label>Section</label>
+          <div class="fg"><label>Video URL *</label><input type="url" id="qUrl" placeholder="YouTube / Drive / Direct link"></div>
+          <div class="fg"><label>Section</label>
             <select id="qSection">
               <option value="popular">⭐ Most Popular</option>
               <option value="today">📅 Today New</option>
@@ -472,119 +172,75 @@
             </select>
           </div>
         </div>
-        <div class="form-group">
-          <label>Thumbnail URL (ঐচ্ছিক)</label>
-          <input type="url" id="qThumb" placeholder="ছবির লিঙ্ক">
-        </div>
-        <div class="form-group">
+        <div class="fg"><label>Thumbnail URL (ঐচ্ছিক)</label><input type="url" id="qThumb" placeholder="ছবির লিঙ্ক"></div>
+        <div class="fg">
           <label>Badges</label>
-          <div class="checkbox-group">
-            <label class="checkbox-item"><input type="checkbox" id="qHD" checked> HD</label>
-            <label class="checkbox-item"><input type="checkbox" id="qPremium" checked> PREMIUM</label>
-            <label class="checkbox-item"><input type="checkbox" id="qNew"> NEW</label>
+          <div class="cb-group">
+            <label class="cb-item"><input type="checkbox" id="qHD" checked> HD</label>
+            <label class="cb-item"><input type="checkbox" id="qPM" checked> PREMIUM</label>
+            <label class="cb-item"><input type="checkbox" id="qNW"> NEW</label>
           </div>
         </div>
-        <button class="btn btn-green" onclick="addVideo()" style="margin-top:8px">✅ ভিডিও যোগ করুন</button>
+        <button class="btn btn-green" onclick="quickAdd()">✅ ভিডিও যোগ করুন</button>
       </div>
     </div>
 
-    <!-- ── VIDEOS TAB ── -->
+    <!-- VIDEOS -->
     <div class="tab-content" id="tab-videos">
-      <div class="video-table-wrap">
-        <div class="table-header">
-          <h3>📋 সব ভিডিও</h3>
-          <button class="btn btn-ghost" onclick="loadVideos()" style="font-size:12px">🔄 রিফ্রেশ</button>
-        </div>
-        <div style="overflow-x:auto">
-          <table class="video-table">
-            <thead>
-              <tr>
-                <th>Thumb</th>
-                <th>টাইটেল</th>
-                <th>Section</th>
-                <th>Badges</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody id="videoTableBody">
-              <tr><td colspan="5" style="text-align:center;padding:30px;color:#888">লোড হচ্ছে...</td></tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="list-header">
+        <h3>📋 সব ভিডিও (<span id="videoCount">0</span>টি)</h3>
+        <button class="btn btn-ghost" style="font-size:12px" onclick="loadVideos()">🔄 রিফ্রেশ</button>
       </div>
+      <div id="videoList"><p style="color:var(--muted);text-align:center;padding:30px">লোড হচ্ছে...</p></div>
     </div>
 
-    <!-- ── ADD VIDEO TAB ── -->
+    <!-- ADD -->
     <div class="tab-content" id="tab-add">
       <div class="form-card">
-        <h3>➕ নতুন ভিডিও যোগ করুন</h3>
-        <div class="form-group">
-          <label>ভিডিও টাইটেল *</label>
-          <input type="text" id="aTitle" placeholder="বাংলায় টাইটেল লিখুন">
-        </div>
-        <div class="form-group">
-          <label>ভিডিও URL / Link *</label>
-          <input type="url" id="aUrl" placeholder="YouTube, Google Drive, বা direct video link">
-        </div>
+        <h3>➕ নতুন ভিডিও পাবলিশ করুন</h3>
+        <div class="fg"><label>ভিডিও টাইটেল *</label><input type="text" id="aTitle" placeholder="বাংলায় টাইটেল লিখুন"></div>
+        <div class="fg"><label>Video URL *</label><input type="url" id="aUrl" placeholder="YouTube, Google Drive, বা direct video link"></div>
         <div class="form-row">
-          <div class="form-group">
-            <label>Section *</label>
+          <div class="fg"><label>Section *</label>
             <select id="aSection">
               <option value="popular">⭐ Most Popular</option>
               <option value="today">📅 Today New</option>
               <option value="trending">🔥 Trending Now</option>
             </select>
           </div>
-          <div class="form-group">
-            <label>Thumbnail URL</label>
-            <input type="url" id="aThumb" placeholder="ছবির লিঙ্ক (ঐচ্ছিক)">
-          </div>
+          <div class="fg"><label>Thumbnail URL</label><input type="url" id="aThumb" placeholder="ছবির লিঙ্ক (ঐচ্ছিক)"></div>
         </div>
-        <div class="form-group">
-          <label>বিবরণ (ঐচ্ছিক)</label>
-          <textarea id="aDesc" placeholder="ভিডিও সম্পর্কে লিখুন..."></textarea>
-        </div>
-        <div class="form-group">
+        <div class="fg"><label>বিবরণ (ঐচ্ছিক)</label><textarea id="aDesc" placeholder="ভিডিও সম্পর্কে লিখুন..."></textarea></div>
+        <div class="fg">
           <label>Badges</label>
-          <div class="checkbox-group">
-            <label class="checkbox-item"><input type="checkbox" id="aHD" checked> HD</label>
-            <label class="checkbox-item"><input type="checkbox" id="aPremium" checked> PREMIUM</label>
-            <label class="checkbox-item"><input type="checkbox" id="aNew"> NEW</label>
+          <div class="cb-group">
+            <label class="cb-item"><input type="checkbox" id="aHD" checked> HD</label>
+            <label class="cb-item"><input type="checkbox" id="aPM" checked> PREMIUM</label>
+            <label class="cb-item"><input type="checkbox" id="aNW"> NEW</label>
           </div>
         </div>
-        <div style="display:flex;gap:10px;margin-top:4px">
-          <button class="btn btn-green" onclick="addVideoFull()">✅ ভিডিও পাবলিশ করুন</button>
-          <button class="btn btn-ghost" onclick="clearAddForm()">🗑️ ক্লিয়ার</button>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-green" onclick="addFull()">✅ পাবলিশ করুন</button>
+          <button class="btn btn-ghost" onclick="clearForm()">🗑️ ক্লিয়ার</button>
         </div>
       </div>
     </div>
 
-    <!-- ── SETTINGS TAB ── -->
+    <!-- SETTINGS -->
     <div class="tab-content" id="tab-settings">
       <div class="settings-card">
         <h3>🔑 পাসওয়ার্ড পরিবর্তন</h3>
-        <div class="form-group">
-          <label>বর্তমান পাসওয়ার্ড</label>
-          <input type="password" id="curPass" placeholder="বর্তমান পাসওয়ার্ড">
-        </div>
-        <div class="form-group">
-          <label>নতুন পাসওয়ার্ড</label>
-          <input type="password" id="newPass" placeholder="নতুন পাসওয়ার্ড">
-        </div>
-        <div class="form-group">
-          <label>পাসওয়ার্ড নিশ্চিত করুন</label>
-          <input type="password" id="confirmPass" placeholder="আবার লিখুন">
-        </div>
-        <button class="btn btn-yellow" onclick="changePassword()">🔐 পাসওয়ার্ড আপডেট</button>
+        <div class="fg"><label>বর্তমান পাসওয়ার্ড</label><input type="password" id="curPass" placeholder="বর্তমান পাসওয়ার্ড"></div>
+        <div class="fg"><label>নতুন পাসওয়ার্ড</label><input type="password" id="newPass" placeholder="নতুন পাসওয়ার্ড (কমপক্ষে ৪ অক্ষর)"></div>
+        <div class="fg"><label>নিশ্চিত করুন</label><input type="password" id="confPass" placeholder="আবার লিখুন"></div>
+        <button class="btn btn-yellow" onclick="changePass()">🔐 আপডেট করুন</button>
       </div>
-
       <div class="settings-card">
         <h3>ℹ️ সিস্টেম তথ্য</h3>
-        <p style="color:var(--muted);font-size:13px;line-height:1.8">
-          🔗 User App: <a href="index.html" style="color:var(--blue)" target="_blank">index.html</a><br>
-          🛢️ Database: Firebase Firestore<br>
-          📦 Hosting: Vercel / GitHub Pages<br>
-          🎬 Supported: YouTube, Google Drive, Direct MP4
+        <p style="color:var(--muted);font-size:13px;line-height:2">
+          🗄️ Database: Firebase Realtime Database<br>
+          🔗 User App: <a href="index.html" target="_blank" style="color:var(--blue)">index.html</a><br>
+          🎬 Supported: YouTube · Google Drive · Direct MP4 · Telegram
         </p>
       </div>
     </div>
@@ -592,303 +248,222 @@
   </div>
 </div>
 
-<!-- ── EDIT MODAL ── -->
+<!-- EDIT MODAL -->
 <div class="modal-overlay" id="editModal">
   <div class="modal-box">
     <h3>✏️ ভিডিও সম্পাদনা</h3>
-    <input type="hidden" id="editId">
-    <div class="form-group">
-      <label>টাইটেল</label>
-      <input type="text" id="editTitle">
+    <input type="hidden" id="editKey">
+    <div class="fg"><label>টাইটেল</label><input type="text" id="eTitle"></div>
+    <div class="fg"><label>Video URL</label><input type="url" id="eUrl"></div>
+    <div class="fg"><label>Thumbnail URL</label><input type="url" id="eThumb"></div>
+    <div class="fg"><label>Section</label>
+      <select id="eSection">
+        <option value="popular">⭐ Most Popular</option>
+        <option value="today">📅 Today New</option>
+        <option value="trending">🔥 Trending</option>
+      </select>
     </div>
-    <div class="form-group">
-      <label>Video URL</label>
-      <input type="url" id="editUrl">
-    </div>
-    <div class="form-group">
-      <label>Thumbnail URL</label>
-      <input type="url" id="editThumb">
-    </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label>Section</label>
-        <select id="editSection">
-          <option value="popular">⭐ Most Popular</option>
-          <option value="today">📅 Today New</option>
-          <option value="trending">🔥 Trending</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group">
-      <label>বিবরণ</label>
-      <textarea id="editDesc"></textarea>
-    </div>
-    <div class="form-group">
+    <div class="fg"><label>বিবরণ</label><textarea id="eDesc"></textarea></div>
+    <div class="fg">
       <label>Badges</label>
-      <div class="checkbox-group">
-        <label class="checkbox-item"><input type="checkbox" id="editHD"> HD</label>
-        <label class="checkbox-item"><input type="checkbox" id="editPremium"> PREMIUM</label>
-        <label class="checkbox-item"><input type="checkbox" id="editNew"> NEW</label>
+      <div class="cb-group">
+        <label class="cb-item"><input type="checkbox" id="eHD"> HD</label>
+        <label class="cb-item"><input type="checkbox" id="ePM"> PREMIUM</label>
+        <label class="cb-item"><input type="checkbox" id="eNW"> NEW</label>
       </div>
     </div>
     <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeEditModal()">বাতিল</button>
-      <button class="btn btn-yellow" onclick="saveEdit()">💾 সেভ করুন</button>
+      <button class="btn btn-ghost" onclick="closeEdit()">বাতিল</button>
+      <button class="btn btn-yellow" onclick="saveEdit()">💾 সেভ</button>
     </div>
   </div>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-// ── PASSWORD MANAGEMENT ──
-const PASS_KEY = 'bvh_admin_pass';
+const PASS_KEY = 'bvh_pass';
+function getPass(){ return localStorage.getItem(PASS_KEY)||'admin123'; }
 
-function getAdminPass() {
-  return localStorage.getItem(PASS_KEY) || 'admin123';
-}
-
-function doLogin() {
-  const pass = document.getElementById('loginPass').value;
-  if (pass === getAdminPass()) {
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('adminScreen').style.display = 'block';
-    sessionStorage.setItem('adminLoggedIn', '1');
-    loadVideos();
-    updateStats();
-  } else {
-    document.getElementById('loginError').style.display = 'block';
-    document.getElementById('loginPass').value = '';
-    setTimeout(() => document.getElementById('loginError').style.display = 'none', 3000);
-  }
-}
-
-function doLogout() {
-  sessionStorage.removeItem('adminLoggedIn');
-  location.reload();
-}
-
-// Auto-login if session active
-if (sessionStorage.getItem('adminLoggedIn')) {
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('adminScreen').style.display = 'block';
-  setTimeout(() => { loadVideos(); updateStats(); }, 600);
-}
-
-// ── TABS ──
-function switchTab(name) {
-  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  event.target.classList.add('active');
-
-  if (name === 'videos') loadVideos();
-  if (name === 'dashboard') updateStats();
-}
-
-// ── ALL VIDEOS IN MEMORY ──
 let allVideos = [];
 
-// ── LOAD VIDEOS ──
-async function loadVideos() {
-  const tbody = document.getElementById('videoTableBody');
-  tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;color:#888">লোড হচ্ছে...</td></tr>';
-
-  try {
-    const db = window._db;
-    const { collection, getDocs, query, orderBy } = window._fs;
-    const snap = await getDocs(query(collection(db, 'videos'), orderBy('createdAt', 'desc')));
-    allVideos = [];
-    snap.forEach(d => allVideos.push({ id: d.id, ...d.data() }));
-    renderTable(allVideos);
-    updateStats();
-  } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;padding:30px;color:#e5002b">Firebase Error: ${err.message}</td></tr>`;
+// ── LOGIN ──
+function doLogin(){
+  const p = document.getElementById('loginPass').value;
+  if(p === getPass()){
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('adminScreen').style.display='block';
+    sessionStorage.setItem('al','1');
+    startListening();
+  } else {
+    const e = document.getElementById('loginErr');
+    e.style.display='block';
+    document.getElementById('loginPass').value='';
+    setTimeout(()=>e.style.display='none',3000);
   }
 }
 
-function renderTable(videos) {
-  const tbody = document.getElementById('videoTableBody');
-  if (!videos.length) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:30px;color:#888">কোনো ভিডিও নেই</td></tr>';
-    return;
-  }
+function doLogout(){ sessionStorage.removeItem('al'); location.reload(); }
 
-  tbody.innerHTML = videos.map(v => {
-    const sectionMap = { popular: 'section-popular', today: 'section-today', trending: 'section-trending' };
-    const sectionLabel = { popular: '⭐ Popular', today: '📅 Today', trending: '🔥 Trending' };
-    const badges = [v.isHD && 'HD', v.isPremium && 'PREMIUM', v.isNew && 'NEW'].filter(Boolean).join(', ');
+if(sessionStorage.getItem('al')){
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('adminScreen').style.display='block';
+  startListening();
+}
 
-    const thumb = v.thumbnail
-      ? `<img class="td-thumb" src="${v.thumbnail}" onerror="this.src=''" loading="lazy">`
-      : `<div class="td-thumb" style="display:flex;align-items:center;justify-content:center;background:#222;font-size:16px">🎬</div>`;
+// ── REALTIME LISTENER ──
+function startListening(){
+  db.ref('videos').orderByChild('createdAt').on('value', snap => {
+    allVideos=[];
+    snap.forEach(c=>allVideos.unshift({key:c.key,...c.val()}));
+    updateStats();
+    renderVideoList();
+  });
+}
 
-    return `<tr>
-      <td>${thumb}</td>
-      <td style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${v.title || '—'}</td>
-      <td><span class="section-badge ${sectionMap[v.section] || ''}">${sectionLabel[v.section] || v.section}</span></td>
-      <td style="font-size:11px;color:#888">${badges || '—'}</td>
-      <td>
-        <div class="action-btns">
-          <button class="btn btn-edit" onclick='openEdit(${JSON.stringify(v).replace(/'/g, "\\'")})''>✏️</button>
-          <button class="btn btn-danger" onclick="deleteVideo('${v.id}', '${(v.title||'').replace(/'/g,'')}')" >🗑️</button>
+function updateStats(){
+  document.getElementById('stTotal').textContent=allVideos.length;
+  document.getElementById('stPop').textContent=allVideos.filter(v=>v.section==='popular').length;
+  document.getElementById('stToday').textContent=allVideos.filter(v=>v.section==='today').length;
+  document.getElementById('stTrend').textContent=allVideos.filter(v=>v.section==='trending').length;
+  document.getElementById('videoCount').textContent=allVideos.length;
+}
+
+function renderVideoList(){
+  const el=document.getElementById('videoList');
+  if(!allVideos.length){el.innerHTML='<p style="color:var(--muted);text-align:center;padding:30px">কোনো ভিডিও নেই</p>';return;}
+  const secLabel={popular:'⭐ Popular',today:'📅 Today',trending:'🔥 Trending'};
+  const secClass={popular:'sec-popular',today:'sec-today',trending:'sec-trending'};
+  el.innerHTML=allVideos.map(v=>{
+    const thumb=v.thumbnail
+      ?`<img src="${v.thumbnail}" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover">`
+      :`🎬`;
+    const badges=[v.isHD&&'HD',v.isPremium&&'PREMIUM',v.isNew&&'NEW'].filter(Boolean).join(' · ')||'—';
+    return `<div class="video-item">
+      <div class="vi-thumb">${thumb}</div>
+      <div class="vi-info">
+        <div class="vi-title">${v.title||'Untitled'}</div>
+        <div class="vi-meta">
+          <span class="sec-badge ${secClass[v.section]||''}">${secLabel[v.section]||v.section}</span>
+          <span style="font-size:11px;color:var(--muted)">${badges}</span>
         </div>
-      </td>
-    </tr>`;
+        <div class="vi-actions">
+          <button class="btn-sm-edit" onclick='openEdit(${JSON.stringify(v)})'>✏️ Edit</button>
+          <button class="btn-sm-del" onclick="delVideo('${v.key}','${(v.title||'').replace(/'/g,'')}')">🗑️ Delete</button>
+        </div>
+      </div>
+    </div>`;
   }).join('');
 }
 
-function updateStats() {
-  document.getElementById('statTotal').textContent = allVideos.length;
-  document.getElementById('statPopular').textContent = allVideos.filter(v => v.section === 'popular').length;
-  document.getElementById('statToday').textContent = allVideos.filter(v => v.section === 'today').length;
-  document.getElementById('statTrending').textContent = allVideos.filter(v => v.section === 'trending').length;
+function loadVideos(){ /* handled by listener */ toast('🔄 লাইভ ডেটা!','ok'); }
+
+// ── ADD ──
+async function quickAdd(){
+  const title=document.getElementById('qTitle').value.trim();
+  const url=document.getElementById('qUrl').value.trim();
+  if(!title||!url){toast('❌ টাইটেল ও URL দিন','err');return;}
+  await pushVideo({title,videoUrl:url,section:document.getElementById('qSection').value,thumbnail:document.getElementById('qThumb').value.trim(),isHD:document.getElementById('qHD').checked,isPremium:document.getElementById('qPM').checked,isNew:document.getElementById('qNW').checked,description:''});
+  document.getElementById('qTitle').value='';
+  document.getElementById('qUrl').value='';
+  document.getElementById('qThumb').value='';
 }
 
-// ── ADD VIDEO (Quick) ──
-async function addVideo() {
-  const title = document.getElementById('qTitle').value.trim();
-  const videoUrl = document.getElementById('qUrl').value.trim();
-  const section = document.getElementById('qSection').value;
-  const thumbnail = document.getElementById('qThumb').value.trim();
-
-  if (!title || !videoUrl) { showToast('❌ টাইটেল ও URL দিন', 'error'); return; }
-
-  await saveVideoToFirestore({
-    title, videoUrl, section, thumbnail,
-    isHD: document.getElementById('qHD').checked,
-    isPremium: document.getElementById('qPremium').checked,
-    isNew: document.getElementById('qNew').checked,
-    description: ''
-  });
-
-  document.getElementById('qTitle').value = '';
-  document.getElementById('qUrl').value = '';
-  document.getElementById('qThumb').value = '';
+async function addFull(){
+  const title=document.getElementById('aTitle').value.trim();
+  const url=document.getElementById('aUrl').value.trim();
+  if(!title||!url){toast('❌ টাইটেল ও URL দিন','err');return;}
+  await pushVideo({title,videoUrl:url,section:document.getElementById('aSection').value,thumbnail:document.getElementById('aThumb').value.trim(),description:document.getElementById('aDesc').value.trim(),isHD:document.getElementById('aHD').checked,isPremium:document.getElementById('aPM').checked,isNew:document.getElementById('aNW').checked});
+  clearForm();
 }
 
-// ── ADD VIDEO (Full form) ──
-async function addVideoFull() {
-  const title = document.getElementById('aTitle').value.trim();
-  const videoUrl = document.getElementById('aUrl').value.trim();
-  if (!title || !videoUrl) { showToast('❌ টাইটেল ও URL দিন', 'error'); return; }
-
-  await saveVideoToFirestore({
-    title, videoUrl,
-    section: document.getElementById('aSection').value,
-    thumbnail: document.getElementById('aThumb').value.trim(),
-    description: document.getElementById('aDesc').value.trim(),
-    isHD: document.getElementById('aHD').checked,
-    isPremium: document.getElementById('aPremium').checked,
-    isNew: document.getElementById('aNew').checked,
-  });
-  clearAddForm();
+async function pushVideo(data){
+  try{
+    await db.ref('videos').push({...data,createdAt:firebase.database.ServerValue.TIMESTAMP});
+    toast('✅ ভিডিও সফলভাবে যোগ হয়েছে!','ok');
+  } catch(e){ toast('❌ Error: '+e.message,'err'); }
 }
 
-async function saveVideoToFirestore(data) {
-  try {
-    const { collection, addDoc, serverTimestamp } = window._fs;
-    await addDoc(collection(window._db, 'videos'), { ...data, createdAt: serverTimestamp() });
-    showToast('✅ ভিডিও সফলভাবে যোগ হয়েছে!', 'success');
-    await loadVideos();
-  } catch (err) {
-    showToast('❌ Error: ' + err.message, 'error');
-  }
-}
-
-function clearAddForm() {
-  ['aTitle','aUrl','aThumb','aDesc'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('aHD').checked = true;
-  document.getElementById('aPremium').checked = true;
-  document.getElementById('aNew').checked = false;
+function clearForm(){
+  ['aTitle','aUrl','aThumb','aDesc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('aHD').checked=true;
+  document.getElementById('aPM').checked=true;
+  document.getElementById('aNW').checked=false;
 }
 
 // ── DELETE ──
-async function deleteVideo(id, title) {
-  if (!confirm(`"${title}" মুছে ফেলবেন?`)) return;
-  try {
-    const { doc, deleteDoc } = window._fs;
-    await deleteDoc(doc(window._db, 'videos', id));
-    showToast('🗑️ ভিডিও মুছে ফেলা হয়েছে', 'success');
-    await loadVideos();
-  } catch (err) {
-    showToast('❌ Error: ' + err.message, 'error');
-  }
+async function delVideo(key,title){
+  if(!confirm(`"${title}" মুছে ফেলবেন?`))return;
+  try{
+    await db.ref('videos/'+key).remove();
+    toast('🗑️ মুছে ফেলা হয়েছে','ok');
+  }catch(e){toast('❌ Error: '+e.message,'err');}
 }
 
 // ── EDIT ──
-let editingId = null;
-
-function openEdit(video) {
-  editingId = video.id;
-  document.getElementById('editTitle').value = video.title || '';
-  document.getElementById('editUrl').value = video.videoUrl || '';
-  document.getElementById('editThumb').value = video.thumbnail || '';
-  document.getElementById('editSection').value = video.section || 'popular';
-  document.getElementById('editDesc').value = video.description || '';
-  document.getElementById('editHD').checked = !!video.isHD;
-  document.getElementById('editPremium').checked = !!video.isPremium;
-  document.getElementById('editNew').checked = !!video.isNew;
+let editKey=null;
+function openEdit(v){
+  editKey=v.key;
+  document.getElementById('eTitle').value=v.title||'';
+  document.getElementById('eUrl').value=v.videoUrl||'';
+  document.getElementById('eThumb').value=v.thumbnail||'';
+  document.getElementById('eSection').value=v.section||'popular';
+  document.getElementById('eDesc').value=v.description||'';
+  document.getElementById('eHD').checked=!!v.isHD;
+  document.getElementById('ePM').checked=!!v.isPremium;
+  document.getElementById('eNW').checked=!!v.isNew;
   document.getElementById('editModal').classList.add('active');
 }
 
-function closeEditModal() {
-  document.getElementById('editModal').classList.remove('active');
-  editingId = null;
-}
+function closeEdit(){ document.getElementById('editModal').classList.remove('active'); editKey=null; }
 
-async function saveEdit() {
-  if (!editingId) return;
-  const { doc, updateDoc } = window._fs;
-  try {
-    await updateDoc(doc(window._db, 'videos', editingId), {
-      title: document.getElementById('editTitle').value.trim(),
-      videoUrl: document.getElementById('editUrl').value.trim(),
-      thumbnail: document.getElementById('editThumb').value.trim(),
-      section: document.getElementById('editSection').value,
-      description: document.getElementById('editDesc').value.trim(),
-      isHD: document.getElementById('editHD').checked,
-      isPremium: document.getElementById('editPremium').checked,
-      isNew: document.getElementById('editNew').checked,
+async function saveEdit(){
+  if(!editKey)return;
+  try{
+    await db.ref('videos/'+editKey).update({
+      title:document.getElementById('eTitle').value.trim(),
+      videoUrl:document.getElementById('eUrl').value.trim(),
+      thumbnail:document.getElementById('eThumb').value.trim(),
+      section:document.getElementById('eSection').value,
+      description:document.getElementById('eDesc').value.trim(),
+      isHD:document.getElementById('eHD').checked,
+      isPremium:document.getElementById('ePM').checked,
+      isNew:document.getElementById('eNW').checked,
     });
-    showToast('✅ আপডেট সফল হয়েছে!', 'success');
-    closeEditModal();
-    await loadVideos();
-  } catch (err) {
-    showToast('❌ Error: ' + err.message, 'error');
-  }
+    toast('✅ আপডেট সফল!','ok');
+    closeEdit();
+  }catch(e){toast('❌ Error: '+e.message,'err');}
 }
 
-// ── PASSWORD CHANGE ──
-function changePassword() {
-  const cur = document.getElementById('curPass').value;
-  const newP = document.getElementById('newPass').value;
-  const conf = document.getElementById('confirmPass').value;
+// ── PASSWORD ──
+function changePass(){
+  const cur=document.getElementById('curPass').value;
+  const np=document.getElementById('newPass').value;
+  const cp=document.getElementById('confPass').value;
+  if(cur!==getPass()){toast('❌ বর্তমান পাসওয়ার্ড ভুল','err');return;}
+  if(!np||np.length<4){toast('❌ কমপক্ষে ৪ অক্ষর দিন','err');return;}
+  if(np!==cp){toast('❌ পাসওয়ার্ড মিলছে না','err');return;}
+  localStorage.setItem(PASS_KEY,np);
+  toast('✅ পাসওয়ার্ড পরিবর্তন হয়েছে!','ok');
+  ['curPass','newPass','confPass'].forEach(id=>document.getElementById(id).value='');
+}
 
-  if (cur !== getAdminPass()) { showToast('❌ বর্তমান পাসওয়ার্ড ভুল', 'error'); return; }
-  if (!newP || newP.length < 4) { showToast('❌ কমপক্ষে ৪ অক্ষরের পাসওয়ার্ড দিন', 'error'); return; }
-  if (newP !== conf) { showToast('❌ পাসওয়ার্ড মিলছে না', 'error'); return; }
-
-  localStorage.setItem(PASS_KEY, newP);
-  showToast('✅ পাসওয়ার্ড পরিবর্তন হয়েছে!', 'success');
-  document.getElementById('curPass').value = '';
-  document.getElementById('newPass').value = '';
-  document.getElementById('confirmPass').value = '';
+// ── TABS ──
+function switchTab(name,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
 }
 
 // ── TOAST ──
-function showToast(msg, type = 'success') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = `toast ${type} show`;
-  setTimeout(() => t.classList.remove('show'), 3000);
+function toast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className=`toast ${type} show`;
+  setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-// Close edit modal on backdrop click
-document.getElementById('editModal').addEventListener('click', function(e) {
-  if (e.target === this) closeEditModal();
-});
+document.getElementById('editModal').addEventListener('click',e=>{if(e.target.id==='editModal')closeEdit();});
 </script>
 </body>
 </html>
