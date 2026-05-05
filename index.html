@@ -9,14 +9,15 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script>
   const firebaseConfig = {
-    apiKey: "AIzaSyDTwcpAg0t_55jE0kAixfvew0CHco-VrXQ",
-    authDomain: "bd-viral-753c9.firebaseapp.com",
-    databaseURL: "https://bd-viral-753c9-default-rtdb.firebaseio.com",
-    projectId: "bd-viral-753c9",
-    storageBucket: "bd-viral-753c9.firebasestorage.app",
-    messagingSenderId: "486061827482",
-    appId: "1:486061827482:web:99413f4c5823ced2e90623"
-  };
+  apiKey: "AIzaSyDTwcpAg0t_55jE0kAixfvew0CHco-VrXQ",
+  authDomain: "bd-viral-753c9.firebaseapp.com",
+  databaseURL: "https://bd-viral-753c9-default-rtdb.firebaseio.com",
+  projectId: "bd-viral-753c9",
+  storageBucket: "bd-viral-753c9.firebasestorage.app",
+  messagingSenderId: "486061827482",
+  appId: "1:486061827482:web:99413f4c5823ced2e90623"
+};
+
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 </script>
@@ -32,6 +33,7 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans-serif; min-height:100vh; }
 
+/* LOGIN */
 .login-wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; background:radial-gradient(ellipse at center,#1a0008,#0d0d0d 70%); }
 .login-box { background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:38px 30px; width:100%; max-width:350px; box-shadow:0 20px 60px rgba(229,0,43,.15); }
 .login-logo { text-align:center; margin-bottom:26px; }
@@ -39,6 +41,7 @@ body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans
 .login-logo p { color:var(--muted); font-size:12px; margin-top:4px; }
 .login-err { color:var(--red); font-size:12px; text-align:center; margin-top:10px; display:none; }
 
+/* FORM */
 .fg { margin-bottom:14px; }
 .fg label { display:block; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:5px; }
 .fg input,.fg select,.fg textarea {
@@ -50,73 +53,6 @@ body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans
 .fg textarea { resize:vertical; min-height:65px; }
 .fg select option { background:#1c1c1c; }
 .form-hint { font-size:11px; color:var(--muted); margin-top:4px; }
-
-/* IMAGE UPLOAD AREA */
-.img-upload-area {
-  border: 2px dashed var(--border);
-  border-radius: 10px;
-  padding: 16px;
-  text-align: center;
-  cursor: pointer;
-  transition: border-color .2s, background .2s;
-  background: #1a1a1a;
-  position: relative;
-}
-.img-upload-area:hover { border-color: var(--red); background: #1e1010; }
-.img-upload-area input[type=file] {
-  position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
-}
-.img-upload-icon { font-size: 28px; margin-bottom: 6px; }
-.img-upload-text { font-size: 12px; color: var(--muted); }
-.img-upload-text b { color: var(--text); }
-.img-preview-wrap {
-  margin-top: 10px;
-  position: relative;
-  display: none;
-}
-.img-preview-wrap img {
-  width: 100%; max-height: 140px; object-fit: cover;
-  border-radius: 7px; border: 1px solid var(--border);
-}
-.img-preview-wrap .remove-img {
-  position: absolute; top: 5px; right: 5px;
-  background: var(--red); color: #fff;
-  border: none; border-radius: 50%;
-  width: 22px; height: 22px; font-size: 12px;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  font-family: monospace; font-weight: 700;
-}
-.upload-progress {
-  margin-top: 8px;
-  background: #222;
-  border-radius: 20px;
-  height: 6px;
-  overflow: hidden;
-  display: none;
-}
-.upload-progress-bar {
-  height: 100%;
-  background: linear-gradient(90deg, var(--red), var(--gold));
-  border-radius: 20px;
-  transition: width .3s;
-  width: 0%;
-}
-.upload-status {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 5px;
-  display: none;
-}
-
-/* OR DIVIDER */
-.or-divider {
-  display: flex; align-items: center; gap: 10px;
-  margin: 10px 0;
-  color: var(--muted); font-size: 11px; font-weight: 700;
-}
-.or-divider::before,.or-divider::after {
-  content:''; flex:1; height:1px; background:var(--border);
-}
 
 .btn { padding:10px 18px; border-radius:8px; border:none; font-family:'Hind Siliguri',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:transform .1s,opacity .2s; display:inline-flex; align-items:center; gap:6px; }
 .btn:active { transform:scale(.97); }
@@ -132,6 +68,7 @@ body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans
 .form-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
 @media(max-width:480px){ .form-row{grid-template-columns:1fr;} }
 
+/* ADMIN SHELL */
 .admin-wrap { display:none; }
 
 .top-nav {
@@ -157,6 +94,7 @@ body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans
 .tab-pane { display:none; }
 .tab-pane.active { display:block; }
 
+/* STATS */
 .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px; margin-bottom:18px; }
 .s-card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px; text-align:center; }
 .s-num { font-size:28px; font-weight:700; color:var(--red); }
@@ -165,6 +103,7 @@ body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans
 .form-card { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px; margin-bottom:18px; }
 .form-card h3 { font-size:14px; font-weight:700; margin-bottom:15px; display:flex; align-items:center; gap:7px; }
 
+/* VIDEO ITEMS */
 .v-item {
   background:var(--panel); border:1px solid var(--border); border-radius:10px;
   padding:11px; display:flex; gap:11px; align-items:flex-start; margin-bottom:9px;
@@ -189,12 +128,14 @@ body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans
 .list-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
 .list-top h3 { font-size:15px; font-weight:700; }
 
+/* MODAL */
 .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:500; padding:20px; overflow-y:auto; }
 .modal-bg.open { display:flex; align-items:center; justify-content:center; }
 .modal-box { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:22px; width:100%; max-width:440px; }
 .modal-box h3 { font-size:14px; font-weight:700; margin-bottom:16px; }
 .modal-foot { display:flex; gap:8px; margin-top:16px; justify-content:flex-end; }
 
+/* TOAST */
 .toast { position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(70px); background:#1e1e1e; border:1px solid var(--border); color:var(--text); padding:11px 20px; border-radius:10px; font-size:13px; font-weight:600; z-index:9999; transition:transform .3s; white-space:nowrap; max-width:90vw; }
 .toast.show { transform:translateX(-50%) translateY(0); }
 .toast.ok  { border-color:var(--green); }
@@ -205,19 +146,6 @@ body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans
 .section-filter { display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; }
 .sf-btn { padding:5px 12px; border-radius:20px; border:1px solid var(--border); background:transparent; color:var(--muted); font-size:12px; font-weight:600; cursor:pointer; font-family:'Hind Siliguri',sans-serif; transition:all .2s; }
 .sf-btn.active { background:var(--red); border-color:var(--red); color:#fff; }
-
-/* API KEY NOTICE */
-.api-notice {
-  background: rgba(245,166,35,.1);
-  border: 1px solid rgba(245,166,35,.3);
-  border-radius: 8px;
-  padding: 10px 12px;
-  font-size: 12px;
-  color: var(--gold);
-  margin-bottom: 14px;
-  line-height: 1.7;
-}
-.api-notice a { color: var(--blue); }
 </style>
 </head>
 <body>
@@ -272,6 +200,7 @@ body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans
           <div class="fg">
             <label>SmartLink / Direct Link *</label>
             <input type="url" id="qLink" placeholder="https://...">
+            <div class="form-hint">Click করলে এই link এ যাবে</div>
           </div>
           <div class="fg">
             <label>Section</label>
@@ -282,23 +211,9 @@ body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans
             </select>
           </div>
         </div>
-        <!-- THUMBNAIL UPLOAD -->
         <div class="fg">
-          <label>Thumbnail (ছবি আপলোড বা URL)</label>
-          <div class="img-upload-area" id="qUploadArea" onclick="document.getElementById('qFileInput').click()">
-            <input type="file" id="qFileInput" accept="image/*" style="display:none" onchange="handleFileSelect(this,'q')">
-            <div class="img-upload-icon">📁</div>
-            <div class="img-upload-text"><b>ক্লিক করে ছবি বেছে নিন</b><br>JPG, PNG, WEBP সাপোর্টেড</div>
-          </div>
-          <div class="img-preview-wrap" id="qPreviewWrap">
-            <img id="qPreviewImg" src="" alt="preview">
-            <button class="remove-img" onclick="removeImg('q')">✕</button>
-          </div>
-          <div class="upload-progress" id="qProgress"><div class="upload-progress-bar" id="qProgressBar"></div></div>
-          <div class="upload-status" id="qStatus"></div>
-          <div class="or-divider">অথবা URL দিন</div>
-          <input type="url" id="qThumb" placeholder="https://i.ibb.co/... বা যেকোনো ছবির URL">
-          <input type="hidden" id="qThumbFinal">
+          <label>Thumbnail URL *</label>
+          <input type="url" id="qThumb" placeholder="ছবির লিঙ্ক (Google Drive, Imgur, etc.)">
         </div>
         <div class="fg">
           <label>Badges</label>
@@ -331,12 +246,6 @@ body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans
     <div class="tab-pane" id="tab-add">
       <div class="form-card">
         <h3>➕ নতুন ভিডিও পাবলিশ করুন</h3>
-
-        <div class="api-notice">
-          ⚡ <b>ImgBB API Key সেট করুন</b> (Settings ট্যাবে) — তাহলে Device থেকে সরাসরি ছবি আপলোড করা যাবে।<br>
-          Free API key পেতে: <a href="https://api.imgbb.com/" target="_blank">api.imgbb.com</a> → Login → Get API Key
-        </div>
-
         <div class="fg">
           <label>ভিডিও টাইটেল *</label>
           <input type="text" id="aTitle" placeholder="বাংলায় টাইটেল লিখুন">
@@ -356,27 +265,11 @@ body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans
             </select>
           </div>
         </div>
-
-        <!-- THUMBNAIL UPLOAD - FULL ADD -->
         <div class="fg">
-          <label>Thumbnail ছবি *</label>
-          <div class="img-upload-area" id="aUploadArea" onclick="document.getElementById('aFileInput').click()">
-            <input type="file" id="aFileInput" accept="image/*" style="display:none" onchange="handleFileSelect(this,'a')">
-            <div class="img-upload-icon">📷</div>
-            <div class="img-upload-text"><b>Device থেকে ছবি বেছে নিন</b><br>ছবি select করলে auto আপলোড হবে</div>
-          </div>
-          <div class="img-preview-wrap" id="aPreviewWrap">
-            <img id="aPreviewImg" src="" alt="preview">
-            <button class="remove-img" onclick="removeImg('a')">✕</button>
-          </div>
-          <div class="upload-progress" id="aProgress"><div class="upload-progress-bar" id="aProgressBar"></div></div>
-          <div class="upload-status" id="aStatus"></div>
-          <div class="or-divider">অথবা সরাসরি URL দিন</div>
-          <input type="url" id="aThumb" placeholder="https://i.ibb.co/... বা যেকোনো ছবির direct URL">
-          <div class="form-hint">ImgBB, Imgur — যেকোনো hosting এর direct image link চলবে</div>
-          <input type="hidden" id="aThumbFinal">
+          <label>Thumbnail URL *</label>
+          <input type="url" id="aThumb" placeholder="ছবির লিঙ্ক">
+          <div class="form-hint">Google Drive share link বা Imgur/ImgBB link দাও</div>
         </div>
-
         <div class="fg">
           <label>বিবরণ (ঐচ্ছিক)</label>
           <textarea id="aDesc" placeholder="ভিডিও সম্পর্কে লিখুন..."></textarea>
@@ -398,25 +291,6 @@ body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans
 
     <!-- SETTINGS -->
     <div class="tab-pane" id="tab-settings">
-
-      <!-- IMGBB API KEY -->
-      <div class="form-card">
-        <h3>🖼️ ImgBB API Key (ছবি আপলোডের জন্য)</h3>
-        <div class="api-notice">
-          📌 <b>কীভাবে পাবেন:</b><br>
-          1. <a href="https://imgbb.com/" target="_blank">imgbb.com</a> এ একটি free account খুলুন<br>
-          2. Login করে <a href="https://api.imgbb.com/" target="_blank">api.imgbb.com</a> এ যান<br>
-          3. "Get API key" বাটনে ক্লিক করুন<br>
-          4. Key টি copy করে নিচে paste করুন
-        </div>
-        <div class="fg">
-          <label>ImgBB API Key</label>
-          <input type="text" id="imgbbKey" placeholder="আপনার ImgBB API key এখানে দিন">
-          <div class="form-hint" id="imgbbStatus" style="color:var(--green)"></div>
-        </div>
-        <button class="btn btn-gold" onclick="saveImgbbKey()">💾 Key সেভ করুন</button>
-      </div>
-
       <div class="form-card">
         <h3>🔑 পাসওয়ার্ড পরিবর্তন</h3>
         <div class="fg"><label>বর্তমান পাসওয়ার্ড</label><input type="password" id="curP" placeholder="বর্তমান পাসওয়ার্ড"></div>
@@ -424,24 +298,21 @@ body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans
         <div class="fg"><label>নিশ্চিত করুন</label><input type="password" id="conP" placeholder="আবার লিখুন"></div>
         <button class="btn btn-gold" onclick="changePass()">🔐 আপডেট করুন</button>
       </div>
-
       <div class="form-card">
-        <h3>💡 Thumbnail Tips</h3>
+        <h3>💡 Thumbnail URL কীভাবে পাবো?</h3>
         <p style="color:var(--muted);font-size:13px;line-height:1.9">
-          <b style="color:var(--green)">✅ সবচেয়ে সহজ:</b> Device থেকে ছবি select করুন → auto upload হবে<br><br>
-          <b style="color:var(--text)">ImgBB direct URL format:</b><br>
-          <code style="background:#222;padding:2px 6px;border-radius:4px;font-size:11px">https://i.ibb.co/XXXXXXX/image.jpg</code><br><br>
-          <b style="color:var(--text)">Imgur:</b> imgur.com → upload → Direct link (.jpg/.png)<br><br>
-          <b style="color:var(--red)">❌ Google Drive link কাজ করে না</b> — সরাসরি image URL লাগবে
+          <b style="color:var(--text)">Google Drive:</b> ছবি upload → Share → "Anyone with link" → Copy link<br>
+          <code style="background:#222;padding:2px 6px;border-radius:4px;font-size:11px">https://drive.google.com/uc?id=FILE_ID</code><br><br>
+          <b style="color:var(--text)">ImgBB (সহজ):</b> imgbb.com → upload → Direct link copy করো<br><br>
+          <b style="color:var(--text)">Imgur:</b> imgur.com → upload → .jpg link copy করো
         </p>
       </div>
-
       <div class="form-card">
         <h3>ℹ️ সিস্টেম</h3>
         <p style="color:var(--muted);font-size:13px;line-height:2">
           🗄️ Database: Firebase Realtime Database<br>
-          🖼️ Image Host: ImgBB (Free)<br>
-          🔗 User App: <a href="index.html" target="_blank" style="color:var(--blue)">index.html</a>
+          🔗 User App: <a href="index.html" target="_blank" style="color:var(--blue)">index.html</a><br>
+          🖱️ Click → SmartLink / Direct URL open হবে
         </p>
       </div>
     </div>
@@ -454,23 +325,11 @@ body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans
   <div class="modal-box">
     <h3>✏️ ভিডিও সম্পাদনা</h3>
     <div class="fg"><label>টাইটেল</label><input type="text" id="eTitle"></div>
-    <div class="fg"><label>SmartLink / Direct Link</label><input type="url" id="eLink"></div>
     <div class="fg">
-      <label>Thumbnail</label>
-      <div class="img-upload-area" onclick="document.getElementById('eFileInput').click()" style="padding:10px">
-        <input type="file" id="eFileInput" accept="image/*" style="display:none" onchange="handleFileSelect(this,'e')">
-        <div style="font-size:12px;color:var(--muted)">📷 নতুন ছবি আপলোড করতে ক্লিক করুন</div>
-      </div>
-      <div class="img-preview-wrap" id="ePreviewWrap">
-        <img id="ePreviewImg" src="" alt="preview">
-        <button class="remove-img" onclick="removeImg('e')">✕</button>
-      </div>
-      <div class="upload-progress" id="eProgress"><div class="upload-progress-bar" id="eProgressBar"></div></div>
-      <div class="upload-status" id="eStatus"></div>
-      <div class="or-divider">অথবা URL পরিবর্তন করুন</div>
-      <input type="url" id="eThumb" placeholder="Thumbnail URL">
-      <input type="hidden" id="eThumbFinal">
+      <label>SmartLink / Direct Link</label>
+      <input type="url" id="eLink">
     </div>
+    <div class="fg"><label>Thumbnail URL</label><input type="url" id="eThumb"></div>
     <div class="fg">
       <label>Section</label>
       <select id="eSec">
@@ -499,25 +358,19 @@ body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans
 
 <script>
 const PK = 'bvh_p';
-const IK = 'bvh_imgbb';
-const getPass   = () => localStorage.getItem(PK) || 'admin123';
-const getImgKey = () => localStorage.getItem(IK) || '';
+const getPass = () => localStorage.getItem(PK) || 'admin123';
 
 let allVids = [];
 let filterSec = 'all';
 let editKey = null;
 
-// Track uploaded URLs per prefix
-const uploadedUrls = { q: '', a: '', e: '' };
-
-// ─── LOGIN ───
+// LOGIN
 function doLogin() {
   const p = document.getElementById('loginPass').value;
   if (p === getPass()) {
     document.getElementById('loginWrap').style.display = 'none';
     document.getElementById('adminWrap').style.display = 'block';
     sessionStorage.setItem('al', '1');
-    loadImgbbKey();
     startDB();
   } else {
     const e = document.getElementById('loginErr');
@@ -532,122 +385,10 @@ function doLogout() { sessionStorage.removeItem('al'); location.reload(); }
 if (sessionStorage.getItem('al')) {
   document.getElementById('loginWrap').style.display = 'none';
   document.getElementById('adminWrap').style.display = 'block';
-  loadImgbbKey();
   startDB();
 }
 
-function loadImgbbKey() {
-  const k = getImgKey();
-  if (k) {
-    document.getElementById('imgbbKey').value = k;
-    document.getElementById('imgbbStatus').textContent = '✅ API Key সেট আছে — ছবি আপলোড চালু';
-  }
-}
-
-function saveImgbbKey() {
-  const k = document.getElementById('imgbbKey').value.trim();
-  if (!k) { toast('❌ API Key দিন', 'err'); return; }
-  localStorage.setItem(IK, k);
-  document.getElementById('imgbbStatus').textContent = '✅ API Key সেভ হয়েছে!';
-  toast('✅ ImgBB Key সেভ হয়েছে!', 'ok');
-}
-
-// ─── IMAGE UPLOAD ───
-async function handleFileSelect(input, prefix) {
-  const file = input.files[0];
-  if (!file) return;
-
-  // Show local preview immediately
-  const reader = new FileReader();
-  reader.onload = e => {
-    document.getElementById(prefix + 'PreviewImg').src = e.target.result;
-    document.getElementById(prefix + 'PreviewWrap').style.display = 'block';
-  };
-  reader.readAsDataURL(file);
-
-  // Upload to ImgBB
-  const apiKey = getImgKey();
-  if (!apiKey) {
-    // No API key — just use local preview as placeholder, remind user
-    uploadedUrls[prefix] = '';
-    document.getElementById(prefix + 'Status').style.display = 'block';
-    document.getElementById(prefix + 'Status').style.color = 'var(--gold)';
-    document.getElementById(prefix + 'Status').textContent = '⚠️ ImgBB API Key সেট করুন (Settings এ) — তাহলে auto upload হবে। এখন URL manually দিন।';
-    return;
-  }
-
-  setProgress(prefix, 10, 'আপলোড শুরু হচ্ছে...');
-
-  try {
-    const formData = new FormData();
-    formData.append('image', file);
-
-    setProgress(prefix, 40, 'ছবি আপলোড হচ্ছে...');
-
-    const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
-      method: 'POST',
-      body: formData
-    });
-
-    setProgress(prefix, 80, 'প্রায় শেষ...');
-
-    const data = await res.json();
-
-    if (data.success) {
-      const url = data.data.display_url;
-      uploadedUrls[prefix] = url;
-      document.getElementById(prefix + 'ThumbFinal').value = url;
-      // Also update the URL input for visibility
-      if (document.getElementById(prefix + 'Thumb')) {
-        document.getElementById(prefix + 'Thumb').value = url;
-      }
-      setProgress(prefix, 100, '✅ আপলোড সফল!', 'var(--green)');
-      setTimeout(() => hideProgress(prefix), 2000);
-    } else {
-      throw new Error(data.error?.message || 'Upload failed');
-    }
-  } catch(err) {
-    setProgress(prefix, 0, '❌ আপলোড ব্যর্থ: ' + err.message, 'var(--red)');
-    uploadedUrls[prefix] = '';
-  }
-}
-
-function setProgress(prefix, pct, msg, color) {
-  document.getElementById(prefix + 'Progress').style.display = 'block';
-  document.getElementById(prefix + 'ProgressBar').style.width = pct + '%';
-  const st = document.getElementById(prefix + 'Status');
-  st.style.display = 'block';
-  st.style.color = color || 'var(--muted)';
-  st.textContent = msg;
-}
-
-function hideProgress(prefix) {
-  document.getElementById(prefix + 'Progress').style.display = 'none';
-  document.getElementById(prefix + 'Status').style.display = 'none';
-}
-
-function removeImg(prefix) {
-  uploadedUrls[prefix] = '';
-  document.getElementById(prefix + 'PreviewWrap').style.display = 'none';
-  document.getElementById(prefix + 'PreviewImg').src = '';
-  document.getElementById(prefix + 'ThumbFinal').value = '';
-  if (document.getElementById(prefix + 'Thumb')) document.getElementById(prefix + 'Thumb').value = '';
-  hideProgress(prefix);
-  // Reset file input
-  const fi = document.getElementById(prefix + 'FileInput');
-  if (fi) fi.value = '';
-}
-
-// Get final thumbnail URL (uploaded > typed URL > empty)
-function getThumbUrl(prefix) {
-  const finalHidden = document.getElementById(prefix + 'ThumbFinal');
-  const urlInput    = document.getElementById(prefix + 'Thumb');
-  if (finalHidden && finalHidden.value) return finalHidden.value;
-  if (urlInput    && urlInput.value.trim()) return urlInput.value.trim();
-  return '';
-}
-
-// ─── FIREBASE ───
+// FIREBASE LISTENER
 function startDB() {
   db.ref('videos').orderByChild('createdAt').on('value', snap => {
     allVids = [];
@@ -665,7 +406,7 @@ function updateStats() {
   document.getElementById('vCount').textContent   = allVids.length;
 }
 
-// ─── RENDER LIST ───
+// RENDER VIDEO LIST
 function renderList() {
   const vids = filterSec === 'all' ? allVids : allVids.filter(v => v.section === filterSec);
   const el = document.getElementById('videoList');
@@ -676,7 +417,7 @@ function renderList() {
 
   el.innerHTML = vids.map(v => {
     const thumb = v.thumbnail
-      ? `<img src="${v.thumbnail}" loading="lazy" onerror="this.parentElement.innerHTML='🎬'" style="width:100%;height:100%;object-fit:cover">`
+      ? `<img src="${v.thumbnail}" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover">`
       : `🎬`;
     const shortLink = (v.link || '').replace('https://','').slice(0,30) + ((v.link||'').length>30?'...':'');
     const badges = [v.isHD&&'HD', v.isPremium&&'PM', v.isNew&&'NEW'].filter(Boolean).join(' · ') || '—';
@@ -691,7 +432,7 @@ function renderList() {
         <div class="link-preview">🔗 ${shortLink||'কোনো link নেই'}</div>
         <div class="v-btns" style="margin-top:6px">
           <button class="b-edit" onclick='openEdit(${JSON.stringify(v)})'>✏️ Edit</button>
-          <button class="b-del"  onclick="delVid('${v.key}','${(v.title||'').replace(/'/g,"\\'").replace(/"/g,'\\"')}')">🗑️ Delete</button>
+          <button class="b-del"  onclick="delVid('${v.key}','${(v.title||'').replace(/'/g,'')}')">🗑️ Delete</button>
         </div>
       </div>
     </div>`;
@@ -705,16 +446,15 @@ function filterList(sec, btn) {
   renderList();
 }
 
-// ─── ADD ───
+// ADD
 async function quickAdd() {
   const title = document.getElementById('qTitle').value.trim();
   const link  = document.getElementById('qLink').value.trim();
   if (!title || !link) { toast('❌ টাইটেল ও Link দিন', 'err'); return; }
-  const thumb = getThumbUrl('q');
   await pushVid({
     title, link,
     section   : document.getElementById('qSec').value,
-    thumbnail : thumb,
+    thumbnail : document.getElementById('qThumb').value.trim(),
     isHD      : document.getElementById('qHD').checked,
     isPremium : document.getElementById('qPM').checked,
     isNew     : document.getElementById('qNW').checked,
@@ -722,18 +462,17 @@ async function quickAdd() {
   });
   document.getElementById('qTitle').value = '';
   document.getElementById('qLink').value  = '';
-  removeImg('q');
+  document.getElementById('qThumb').value = '';
 }
 
 async function addFull() {
   const title = document.getElementById('aTitle').value.trim();
   const link  = document.getElementById('aLink').value.trim();
   if (!title || !link) { toast('❌ টাইটেল ও Link দিন', 'err'); return; }
-  const thumb = getThumbUrl('a');
   await pushVid({
     title, link,
     section    : document.getElementById('aSec').value,
-    thumbnail  : thumb,
+    thumbnail  : document.getElementById('aThumb').value.trim(),
     description: document.getElementById('aDesc').value.trim(),
     isHD       : document.getElementById('aHD').checked,
     isPremium  : document.getElementById('aPM').checked,
@@ -754,10 +493,9 @@ function clearAdd() {
   document.getElementById('aHD').checked = true;
   document.getElementById('aPM').checked = true;
   document.getElementById('aNW').checked = false;
-  removeImg('a');
 }
 
-// ─── DELETE ───
+// DELETE
 async function delVid(key, title) {
   if (!confirm(`"${title}" মুছে ফেলবেন?`)) return;
   try {
@@ -766,27 +504,17 @@ async function delVid(key, title) {
   } catch(e) { toast('❌ Error: ' + e.message, 'err'); }
 }
 
-// ─── EDIT ───
+// EDIT
 function openEdit(v) {
   editKey = v.key;
   document.getElementById('eTitle').value = v.title || '';
   document.getElementById('eLink').value  = v.link  || '';
   document.getElementById('eThumb').value = v.thumbnail || '';
-  document.getElementById('eThumbFinal').value = v.thumbnail || '';
   document.getElementById('eSec').value   = v.section || 'popular';
   document.getElementById('eDesc').value  = v.description || '';
   document.getElementById('eHD').checked  = !!v.isHD;
   document.getElementById('ePM').checked  = !!v.isPremium;
   document.getElementById('eNW').checked  = !!v.isNew;
-  // Show existing thumbnail preview
-  if (v.thumbnail) {
-    document.getElementById('ePreviewImg').src = v.thumbnail;
-    document.getElementById('ePreviewWrap').style.display = 'block';
-  } else {
-    document.getElementById('ePreviewWrap').style.display = 'none';
-  }
-  hideProgress('e');
-  uploadedUrls['e'] = '';
   document.getElementById('editModal').classList.add('open');
 }
 
@@ -794,12 +522,11 @@ function closeEdit() { document.getElementById('editModal').classList.remove('op
 
 async function saveEdit() {
   if (!editKey) return;
-  const thumb = getThumbUrl('e') || document.getElementById('eThumb').value.trim();
   try {
     await db.ref('videos/' + editKey).update({
       title      : document.getElementById('eTitle').value.trim(),
       link       : document.getElementById('eLink').value.trim(),
-      thumbnail  : thumb,
+      thumbnail  : document.getElementById('eThumb').value.trim(),
       section    : document.getElementById('eSec').value,
       description: document.getElementById('eDesc').value.trim(),
       isHD       : document.getElementById('eHD').checked,
@@ -811,7 +538,7 @@ async function saveEdit() {
   } catch(e) { toast('❌ Error: ' + e.message, 'err'); }
 }
 
-// ─── PASSWORD ───
+// PASSWORD
 function changePass() {
   const c = document.getElementById('curP').value;
   const n = document.getElementById('newP').value;
@@ -824,7 +551,7 @@ function changePass() {
   ['curP','newP','conP'].forEach(id => document.getElementById(id).value = '');
 }
 
-// ─── TABS ───
+// TABS
 function switchTab(name, btn) {
   document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.t-btn').forEach(b => b.classList.remove('active'));
@@ -833,7 +560,7 @@ function switchTab(name, btn) {
   if (name === 'videos') renderList();
 }
 
-// ─── TOAST ───
+// TOAST
 function toast(msg, type) {
   const el = document.getElementById('toastEl');
   el.textContent = msg;
