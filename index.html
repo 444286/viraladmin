@@ -642,7 +642,7 @@ function getThumbUrl(prefix) {
 
 // ─── FIREBASE ───
 function startDB() {
-  db.ref('videos').orderByChild('createdAt').on('value', snap => {
+  db.ref('videos').on('value', snap => {
     allVids = [];
     snap.forEach(c => allVids.unshift({ key: c.key, ...c.val() }));
     updateStats();
