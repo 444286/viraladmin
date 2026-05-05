@@ -557,7 +557,7 @@ async function handleFileSelect(input, prefix) {
   const file = input.files[0];
   if (!file) return;
 
-  // Show local preview immediately
+  // Preview
   const reader = new FileReader();
   reader.onload = e => {
     document.getElementById(prefix + 'PreviewImg').src = e.target.result;
@@ -565,50 +565,43 @@ async function handleFileSelect(input, prefix) {
   };
   reader.readAsDataURL(file);
 
-  // Upload to ImgBB
-  const apiKey = getImgKey();
+  const apiKey = localStorage.getItem('bvh_imgbb');
+
   if (!apiKey) {
-    // No API key — just use local preview as placeholder, remind user
-    uploadedUrls[prefix] = '';
-    document.getElementById(prefix + 'Status').style.display = 'block';
-    document.getElementById(prefix + 'Status').style.color = 'var(--gold)';
-    document.getElementById(prefix + 'Status').textContent = '⚠️ ImgBB API Key সেট করুন (Settings এ) — তাহলে auto upload হবে। এখন URL manually দিন।';
+    setProgress(prefix, 0, "❌ API Key সেট করো (Settings)", "red");
     return;
   }
 
-  setProgress(prefix, 10, 'আপলোড শুরু হচ্ছে...');
-
   try {
-    const formData = new FormData();
-    formData.append('image', file);
+    setProgress(prefix, 20, "Uploading...");
 
-    setProgress(prefix, 40, 'ছবি আপলোড হচ্ছে...');
+    const formData = new FormData();
+    formData.append("image", file);
 
     const res = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, {
-      method: 'POST',
+      method: "POST",
       body: formData
     });
-
-    setProgress(prefix, 80, 'প্রায় শেষ...');
 
     const data = await res.json();
 
     if (data.success) {
       const url = data.data.display_url;
+
       uploadedUrls[prefix] = url;
       document.getElementById(prefix + 'ThumbFinal').value = url;
-      // Also update the URL input for visibility
+
       if (document.getElementById(prefix + 'Thumb')) {
         document.getElementById(prefix + 'Thumb').value = url;
       }
-      setProgress(prefix, 100, '✅ আপলোড সফল!', 'var(--green)');
-      setTimeout(() => hideProgress(prefix), 2000);
+
+      setProgress(prefix, 100, "✅ Upload done", "green");
     } else {
-      throw new Error(data.error?.message || 'Upload failed');
+      throw new Error("Upload failed");
     }
-  } catch(err) {
-    setProgress(prefix, 0, '❌ আপলোড ব্যর্থ: ' + err.message, 'var(--red)');
-    uploadedUrls[prefix] = '';
+
+  } catch (err) {
+    setProgress(prefix, 0, "❌ Error: " + err.message, "red");
   }
 }
 
