@@ -7,9 +7,7 @@
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-
 <script>
-  // ✅ তোমার Firebase Config এখানে বসাও (index.html এর মতোই)
   const firebaseConfig = {
   apiKey: "AIzaSyDTwcpAg0t_55jE0kAixfvew0CHco-VrXQ",
   authDomain: "bd-viral-753c9.firebaseapp.com",
@@ -19,108 +17,141 @@
   messagingSenderId: "486061827482",
   appId: "1:486061827482:web:99413f4c5823ced2e90623"
 };
+
   firebase.initializeApp(firebaseConfig);
   const db = firebase.database();
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
-  :root { --red:#e5002b; --bg:#0d0d0d; --panel:#161616; --border:#2a2a2a; --text:#f0f0f0; --muted:#888; --green:#00c853; --yellow:#f5a623; --blue:#00bcd4; }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans-serif; min-height:100vh; }
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
 
-  /* LOGIN */
-  .login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; background:radial-gradient(ellipse at center,#1a0008,#0d0d0d 70%); }
-  .login-box { background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:40px 32px; width:100%; max-width:360px; box-shadow:0 20px 60px rgba(229,0,43,.15); }
-  .login-logo { text-align:center; margin-bottom:28px; }
-  .login-logo h1 { font-size:28px; font-weight:700; color:var(--red); }
-  .login-logo p { color:var(--muted); font-size:13px; margin-top:4px; }
-  .login-err { color:var(--red); font-size:13px; text-align:center; margin-top:10px; display:none; }
+:root {
+  --red:#e5002b; --bg:#0d0d0d; --panel:#161616;
+  --border:#252525; --text:#f0f0f0; --muted:#777;
+  --green:#00c853; --gold:#f5a623; --blue:#00bcd4;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'Hind Siliguri',sans-serif; min-height:100vh; }
 
-  /* FORM */
-  .fg { margin-bottom:16px; }
-  .fg label { display:block; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
-  .fg input, .fg select, .fg textarea { width:100%; background:#1e1e1e; border:1px solid var(--border); border-radius:8px; padding:10px 12px; color:var(--text); font-family:'Hind Siliguri',sans-serif; font-size:14px; outline:none; transition:border-color .2s; }
-  .fg input:focus, .fg select:focus, .fg textarea:focus { border-color:var(--red); }
-  .fg textarea { resize:vertical; min-height:70px; }
-  .fg select option { background:#1e1e1e; }
+/* LOGIN */
+.login-wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; background:radial-gradient(ellipse at center,#1a0008,#0d0d0d 70%); }
+.login-box { background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:38px 30px; width:100%; max-width:350px; box-shadow:0 20px 60px rgba(229,0,43,.15); }
+.login-logo { text-align:center; margin-bottom:26px; }
+.login-logo h1 { font-size:26px; font-weight:700; color:var(--red); }
+.login-logo p { color:var(--muted); font-size:12px; margin-top:4px; }
+.login-err { color:var(--red); font-size:12px; text-align:center; margin-top:10px; display:none; }
 
-  .btn { padding:10px 18px; border-radius:8px; border:none; font-family:'Hind Siliguri',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:opacity .2s,transform .1s; display:inline-flex; align-items:center; gap:6px; }
-  .btn:active { transform:scale(.97); }
-  .btn-red { background:var(--red); color:#fff; width:100%; justify-content:center; }
-  .btn-green { background:var(--green); color:#000; }
-  .btn-yellow { background:var(--yellow); color:#000; }
-  .btn-ghost { background:transparent; border:1px solid var(--border); color:var(--text); }
-  .btn-sm-del { background:var(--red); color:#fff; font-size:11px; padding:5px 10px; border:none; border-radius:6px; cursor:pointer; font-family:'Hind Siliguri',sans-serif; font-weight:600; }
-  .btn-sm-edit { background:var(--yellow); color:#000; font-size:11px; padding:5px 10px; border:none; border-radius:6px; cursor:pointer; font-family:'Hind Siliguri',sans-serif; font-weight:600; }
+/* FORM */
+.fg { margin-bottom:14px; }
+.fg label { display:block; font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; margin-bottom:5px; }
+.fg input,.fg select,.fg textarea {
+  width:100%; background:#1c1c1c; border:1px solid var(--border);
+  border-radius:8px; padding:10px 12px; color:var(--text);
+  font-family:'Hind Siliguri',sans-serif; font-size:14px; outline:none; transition:border-color .2s;
+}
+.fg input:focus,.fg select:focus,.fg textarea:focus { border-color:var(--red); }
+.fg textarea { resize:vertical; min-height:65px; }
+.fg select option { background:#1c1c1c; }
+.form-hint { font-size:11px; color:var(--muted); margin-top:4px; }
 
-  .cb-group { display:flex; gap:14px; flex-wrap:wrap; margin-top:4px; }
-  .cb-item { display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; }
-  .cb-item input { width:15px; height:15px; accent-color:var(--red); cursor:pointer; }
+.btn { padding:10px 18px; border-radius:8px; border:none; font-family:'Hind Siliguri',sans-serif; font-size:14px; font-weight:600; cursor:pointer; transition:transform .1s,opacity .2s; display:inline-flex; align-items:center; gap:6px; }
+.btn:active { transform:scale(.97); }
+.btn-red  { background:var(--red); color:#fff; width:100%; justify-content:center; }
+.btn-green{ background:var(--green); color:#000; }
+.btn-gold { background:var(--gold); color:#000; }
+.btn-ghost{ background:transparent; border:1px solid var(--border); color:var(--text); }
 
-  /* ADMIN LAYOUT */
-  .admin-screen { display:none; }
-  .admin-nav { background:#111; border-bottom:2px solid var(--red); padding:0 16px; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:100; gap:8px; flex-wrap:wrap; }
-  .admin-nav-logo { font-size:16px; font-weight:700; color:var(--red); white-space:nowrap; }
-  .admin-nav-logo span { color:var(--text); }
-  .tabs { display:flex; gap:4px; overflow-x:auto; }
-  .tab-btn { padding:6px 12px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:600; border:none; background:transparent; color:var(--muted); white-space:nowrap; font-family:'Hind Siliguri',sans-serif; }
-  .tab-btn.active { background:var(--red); color:#fff; }
-  .tab-btn:hover:not(.active) { background:var(--border); color:var(--text); }
+.cb-row { display:flex; gap:14px; flex-wrap:wrap; margin-top:5px; }
+.cb-item { display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; }
+.cb-item input { width:15px; height:15px; accent-color:var(--red); cursor:pointer; }
 
-  .admin-body { max-width:860px; margin:0 auto; padding:20px 16px; }
-  .tab-content { display:none; }
-  .tab-content.active { display:block; }
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+@media(max-width:480px){ .form-row{grid-template-columns:1fr;} }
 
-  /* STATS */
-  .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:10px; margin-bottom:20px; }
-  .stat-card { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px; text-align:center; }
-  .stat-num { font-size:28px; font-weight:700; color:var(--red); }
-  .stat-label { font-size:11px; color:var(--muted); margin-top:4px; }
+/* ADMIN SHELL */
+.admin-wrap { display:none; }
 
-  /* CARDS */
-  .form-card { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:20px; }
-  .form-card h3 { font-size:15px; font-weight:700; margin-bottom:16px; }
-  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  @media(max-width:480px){ .form-row { grid-template-columns:1fr; } }
+.top-nav {
+  background:#111; border-bottom:2px solid var(--red);
+  padding:0 14px; display:flex; align-items:center;
+  justify-content:space-between; height:54px;
+  position:sticky; top:0; z-index:100;
+}
+.nav-logo { font-size:15px; font-weight:700; color:var(--red); white-space:nowrap; }
+.nav-logo span { color:var(--text); }
+.nav-tabs { display:flex; gap:3px; overflow-x:auto; scrollbar-width:none; }
+.nav-tabs::-webkit-scrollbar { display:none; }
+.t-btn {
+  padding:5px 11px; border-radius:6px; cursor:pointer;
+  font-size:12px; font-weight:600; border:none;
+  background:transparent; color:var(--muted); white-space:nowrap;
+  font-family:'Hind Siliguri',sans-serif; transition:all .2s;
+}
+.t-btn.active { background:var(--red); color:#fff; }
+.t-btn:hover:not(.active){ background:#222; color:var(--text); }
 
-  /* VIDEO LIST */
-  .video-item { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:12px; display:flex; gap:12px; align-items:flex-start; margin-bottom:10px; }
-  .vi-thumb { width:72px; height:48px; border-radius:6px; object-fit:cover; background:#222; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:20px; overflow:hidden; }
-  .vi-thumb img { width:100%; height:100%; object-fit:cover; }
-  .vi-info { flex:1; min-width:0; }
-  .vi-title { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:6px; }
-  .vi-meta { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
-  .sec-badge { font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; text-transform:uppercase; }
-  .sec-popular { background:rgba(245,166,35,.2); color:var(--yellow); }
-  .sec-today { background:rgba(0,200,83,.2); color:var(--green); }
-  .sec-trending { background:rgba(229,0,43,.2); color:var(--red); }
-  .vi-actions { display:flex; gap:6px; margin-top:8px; }
+.admin-body { max-width:820px; margin:0 auto; padding:18px 14px; }
+.tab-pane { display:none; }
+.tab-pane.active { display:block; }
 
-  /* MODAL */
-  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:500; overflow-y:auto; padding:20px; }
-  .modal-overlay.active { display:flex; align-items:center; justify-content:center; }
-  .modal-box { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:24px; width:100%; max-width:460px; }
-  .modal-box h3 { font-size:15px; font-weight:700; margin-bottom:18px; }
-  .modal-actions { display:flex; gap:10px; margin-top:18px; justify-content:flex-end; }
+/* STATS */
+.stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px; margin-bottom:18px; }
+.s-card { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px; text-align:center; }
+.s-num { font-size:28px; font-weight:700; color:var(--red); }
+.s-lbl { font-size:11px; color:var(--muted); margin-top:3px; }
 
-  /* TOAST */
-  .toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(80px); background:#1e1e1e; border:1px solid var(--border); color:var(--text); padding:12px 20px; border-radius:10px; font-size:13px; font-weight:600; z-index:9999; transition:transform .3s; white-space:nowrap; max-width:90vw; }
-  .toast.show { transform:translateX(-50%) translateY(0); }
-  .toast.ok { border-color:var(--green); }
-  .toast.err { border-color:var(--red); }
+.form-card { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px; margin-bottom:18px; }
+.form-card h3 { font-size:14px; font-weight:700; margin-bottom:15px; display:flex; align-items:center; gap:7px; }
 
-  .settings-card { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:20px; margin-bottom:16px; }
-  .settings-card h3 { font-size:15px; font-weight:700; margin-bottom:16px; }
+/* VIDEO ITEMS */
+.v-item {
+  background:var(--panel); border:1px solid var(--border); border-radius:10px;
+  padding:11px; display:flex; gap:11px; align-items:flex-start; margin-bottom:9px;
+}
+.v-thumb-box {
+  width:70px; height:48px; border-radius:6px; overflow:hidden;
+  background:#1e1e1e; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:20px;
+}
+.v-thumb-box img { width:100%; height:100%; object-fit:cover; }
+.v-info-box { flex:1; min-width:0; }
+.v-name { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:5px; }
+.v-meta-row { display:flex; gap:6px; flex-wrap:wrap; align-items:center; margin-bottom:6px; }
+.sec-pill { font-size:10px; font-weight:700; padding:2px 7px; border-radius:4px; text-transform:uppercase; }
+.pill-pop  { background:rgba(245,166,35,.18); color:var(--gold); }
+.pill-today{ background:rgba(0,200,83,.18); color:var(--green); }
+.pill-trend{ background:rgba(229,0,43,.18); color:var(--red); }
+.link-preview { font-size:10px; color:var(--blue); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:180px; }
+.v-btns { display:flex; gap:6px; }
+.b-edit { background:var(--gold); color:#000; font-size:11px; font-weight:700; padding:4px 10px; border:none; border-radius:5px; cursor:pointer; font-family:'Hind Siliguri',sans-serif; }
+.b-del  { background:var(--red);  color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border:none; border-radius:5px; cursor:pointer; font-family:'Hind Siliguri',sans-serif; }
 
-  .list-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
-  .list-header h3 { font-size:15px; font-weight:700; }
+.list-top { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+.list-top h3 { font-size:15px; font-weight:700; }
+
+/* MODAL */
+.modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:500; padding:20px; overflow-y:auto; }
+.modal-bg.open { display:flex; align-items:center; justify-content:center; }
+.modal-box { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:22px; width:100%; max-width:440px; }
+.modal-box h3 { font-size:14px; font-weight:700; margin-bottom:16px; }
+.modal-foot { display:flex; gap:8px; margin-top:16px; justify-content:flex-end; }
+
+/* TOAST */
+.toast { position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(70px); background:#1e1e1e; border:1px solid var(--border); color:var(--text); padding:11px 20px; border-radius:10px; font-size:13px; font-weight:600; z-index:9999; transition:transform .3s; white-space:nowrap; max-width:90vw; }
+.toast.show { transform:translateX(-50%) translateY(0); }
+.toast.ok  { border-color:var(--green); }
+.toast.err { border-color:var(--red); }
+
+.empty-list { text-align:center; padding:30px; color:var(--muted); font-size:13px; }
+
+.section-filter { display:flex; gap:6px; margin-bottom:14px; flex-wrap:wrap; }
+.sf-btn { padding:5px 12px; border-radius:20px; border:1px solid var(--border); background:transparent; color:var(--muted); font-size:12px; font-weight:600; cursor:pointer; font-family:'Hind Siliguri',sans-serif; transition:all .2s; }
+.sf-btn.active { background:var(--red); border-color:var(--red); color:#fff; }
 </style>
 </head>
 <body>
 
 <!-- LOGIN -->
-<div class="login-screen" id="loginScreen">
+<div class="login-wrap" id="loginWrap">
   <div class="login-box">
     <div class="login-logo">
       <h1>🎬 BD VIRAL</h1>
@@ -136,111 +167,152 @@
 </div>
 
 <!-- ADMIN -->
-<div class="admin-screen" id="adminScreen">
-  <div class="admin-nav">
-    <div class="admin-nav-logo">BD <span>VIRAL</span></div>
-    <div class="tabs">
-      <button class="tab-btn active" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
-      <button class="tab-btn" onclick="switchTab('videos',this)">🎬 Videos</button>
-      <button class="tab-btn" onclick="switchTab('add',this)">➕ Add</button>
-      <button class="tab-btn" onclick="switchTab('settings',this)">⚙️ Settings</button>
-      <button class="tab-btn" onclick="doLogout()">🚪 Logout</button>
+<div class="admin-wrap" id="adminWrap">
+  <div class="top-nav">
+    <div class="nav-logo">BD <span>VIRAL</span></div>
+    <div class="nav-tabs">
+      <button class="t-btn active" onclick="switchTab('dash',this)">📊 Dashboard</button>
+      <button class="t-btn" onclick="switchTab('videos',this)">🎬 Videos</button>
+      <button class="t-btn" onclick="switchTab('add',this)">➕ Add</button>
+      <button class="t-btn" onclick="switchTab('settings',this)">⚙️ Settings</button>
+      <button class="t-btn" onclick="doLogout()">🚪 Logout</button>
     </div>
   </div>
 
   <div class="admin-body">
 
     <!-- DASHBOARD -->
-    <div class="tab-content active" id="tab-dashboard">
-      <div class="stats-grid">
-        <div class="stat-card"><div class="stat-num" id="stTotal">0</div><div class="stat-label">মোট ভিডিও</div></div>
-        <div class="stat-card"><div class="stat-num" id="stPop">0</div><div class="stat-label">Most Popular</div></div>
-        <div class="stat-card"><div class="stat-num" id="stToday">0</div><div class="stat-label">Today New</div></div>
-        <div class="stat-card"><div class="stat-num" id="stTrend">0</div><div class="stat-label">Trending</div></div>
+    <div class="tab-pane active" id="tab-dash">
+      <div class="stats">
+        <div class="s-card"><div class="s-num" id="stTotal">0</div><div class="s-lbl">মোট ভিডিও</div></div>
+        <div class="s-card"><div class="s-num" id="stPop">0</div><div class="s-lbl">Most Popular</div></div>
+        <div class="s-card"><div class="s-num" id="stToday">0</div><div class="s-lbl">Today New</div></div>
+        <div class="s-card"><div class="s-num" id="stTrend">0</div><div class="s-lbl">Trending</div></div>
       </div>
 
       <div class="form-card">
-        <h3>⚡ Quick Add Video</h3>
-        <div class="fg"><label>ভিডিও টাইটেল *</label><input type="text" id="qTitle" placeholder="বাংলায় টাইটেল লিখুন"></div>
+        <h3>⚡ Quick Add</h3>
+        <div class="fg">
+          <label>ভিডিও টাইটেল *</label>
+          <input type="text" id="qTitle" placeholder="বাংলায় টাইটেল লিখুন">
+        </div>
         <div class="form-row">
-          <div class="fg"><label>Video URL *</label><input type="url" id="qUrl" placeholder="YouTube / Drive / Direct link"></div>
-          <div class="fg"><label>Section</label>
-            <select id="qSection">
+          <div class="fg">
+            <label>SmartLink / Direct Link *</label>
+            <input type="url" id="qLink" placeholder="https://...">
+            <div class="form-hint">Click করলে এই link এ যাবে</div>
+          </div>
+          <div class="fg">
+            <label>Section</label>
+            <select id="qSec">
               <option value="popular">⭐ Most Popular</option>
               <option value="today">📅 Today New</option>
               <option value="trending">🔥 Trending</option>
             </select>
           </div>
         </div>
-        <div class="fg"><label>Thumbnail URL (ঐচ্ছিক)</label><input type="url" id="qThumb" placeholder="ছবির লিঙ্ক"></div>
+        <div class="fg">
+          <label>Thumbnail URL *</label>
+          <input type="url" id="qThumb" placeholder="ছবির লিঙ্ক (Google Drive, Imgur, etc.)">
+        </div>
         <div class="fg">
           <label>Badges</label>
-          <div class="cb-group">
+          <div class="cb-row">
             <label class="cb-item"><input type="checkbox" id="qHD" checked> HD</label>
             <label class="cb-item"><input type="checkbox" id="qPM" checked> PREMIUM</label>
             <label class="cb-item"><input type="checkbox" id="qNW"> NEW</label>
           </div>
         </div>
-        <button class="btn btn-green" onclick="quickAdd()">✅ ভিডিও যোগ করুন</button>
+        <button class="btn btn-green" onclick="quickAdd()">✅ যোগ করুন</button>
       </div>
     </div>
 
     <!-- VIDEOS -->
-    <div class="tab-content" id="tab-videos">
-      <div class="list-header">
-        <h3>📋 সব ভিডিও (<span id="videoCount">0</span>টি)</h3>
-        <button class="btn btn-ghost" style="font-size:12px" onclick="loadVideos()">🔄 রিফ্রেশ</button>
+    <div class="tab-pane" id="tab-videos">
+      <div class="list-top">
+        <h3>📋 সব ভিডিও (<span id="vCount">0</span>)</h3>
+        <button class="btn btn-ghost" style="font-size:12px;padding:6px 12px" onclick="toast('🔄 লাইভ ডেটা!','ok')">🔄 Live</button>
       </div>
-      <div id="videoList"><p style="color:var(--muted);text-align:center;padding:30px">লোড হচ্ছে...</p></div>
+      <div class="section-filter">
+        <button class="sf-btn active" onclick="filterList('all',this)">সব</button>
+        <button class="sf-btn" onclick="filterList('popular',this)">⭐ Popular</button>
+        <button class="sf-btn" onclick="filterList('today',this)">📅 Today</button>
+        <button class="sf-btn" onclick="filterList('trending',this)">🔥 Trending</button>
+      </div>
+      <div id="videoList"><div class="empty-list">লোড হচ্ছে...</div></div>
     </div>
 
     <!-- ADD -->
-    <div class="tab-content" id="tab-add">
+    <div class="tab-pane" id="tab-add">
       <div class="form-card">
         <h3>➕ নতুন ভিডিও পাবলিশ করুন</h3>
-        <div class="fg"><label>ভিডিও টাইটেল *</label><input type="text" id="aTitle" placeholder="বাংলায় টাইটেল লিখুন"></div>
-        <div class="fg"><label>Video URL *</label><input type="url" id="aUrl" placeholder="YouTube, Google Drive, বা direct video link"></div>
+        <div class="fg">
+          <label>ভিডিও টাইটেল *</label>
+          <input type="text" id="aTitle" placeholder="বাংলায় টাইটেল লিখুন">
+        </div>
         <div class="form-row">
-          <div class="fg"><label>Section *</label>
-            <select id="aSection">
+          <div class="fg">
+            <label>SmartLink / Direct Link *</label>
+            <input type="url" id="aLink" placeholder="https://...">
+            <div class="form-hint">Thumbnail click করলে এই link খুলবে</div>
+          </div>
+          <div class="fg">
+            <label>Section *</label>
+            <select id="aSec">
               <option value="popular">⭐ Most Popular</option>
               <option value="today">📅 Today New</option>
               <option value="trending">🔥 Trending Now</option>
             </select>
           </div>
-          <div class="fg"><label>Thumbnail URL</label><input type="url" id="aThumb" placeholder="ছবির লিঙ্ক (ঐচ্ছিক)"></div>
         </div>
-        <div class="fg"><label>বিবরণ (ঐচ্ছিক)</label><textarea id="aDesc" placeholder="ভিডিও সম্পর্কে লিখুন..."></textarea></div>
+        <div class="fg">
+          <label>Thumbnail URL *</label>
+          <input type="url" id="aThumb" placeholder="ছবির লিঙ্ক">
+          <div class="form-hint">Google Drive share link বা Imgur/ImgBB link দাও</div>
+        </div>
+        <div class="fg">
+          <label>বিবরণ (ঐচ্ছিক)</label>
+          <textarea id="aDesc" placeholder="ভিডিও সম্পর্কে লিখুন..."></textarea>
+        </div>
         <div class="fg">
           <label>Badges</label>
-          <div class="cb-group">
+          <div class="cb-row">
             <label class="cb-item"><input type="checkbox" id="aHD" checked> HD</label>
             <label class="cb-item"><input type="checkbox" id="aPM" checked> PREMIUM</label>
             <label class="cb-item"><input type="checkbox" id="aNW"> NEW</label>
           </div>
         </div>
-        <div style="display:flex;gap:10px">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
           <button class="btn btn-green" onclick="addFull()">✅ পাবলিশ করুন</button>
-          <button class="btn btn-ghost" onclick="clearForm()">🗑️ ক্লিয়ার</button>
+          <button class="btn btn-ghost" onclick="clearAdd()">🗑️ ক্লিয়ার</button>
         </div>
       </div>
     </div>
 
     <!-- SETTINGS -->
-    <div class="tab-content" id="tab-settings">
-      <div class="settings-card">
+    <div class="tab-pane" id="tab-settings">
+      <div class="form-card">
         <h3>🔑 পাসওয়ার্ড পরিবর্তন</h3>
-        <div class="fg"><label>বর্তমান পাসওয়ার্ড</label><input type="password" id="curPass" placeholder="বর্তমান পাসওয়ার্ড"></div>
-        <div class="fg"><label>নতুন পাসওয়ার্ড</label><input type="password" id="newPass" placeholder="নতুন পাসওয়ার্ড (কমপক্ষে ৪ অক্ষর)"></div>
-        <div class="fg"><label>নিশ্চিত করুন</label><input type="password" id="confPass" placeholder="আবার লিখুন"></div>
-        <button class="btn btn-yellow" onclick="changePass()">🔐 আপডেট করুন</button>
+        <div class="fg"><label>বর্তমান পাসওয়ার্ড</label><input type="password" id="curP" placeholder="বর্তমান পাসওয়ার্ড"></div>
+        <div class="fg"><label>নতুন পাসওয়ার্ড</label><input type="password" id="newP" placeholder="নতুন পাসওয়ার্ড (কমপক্ষে ৪ অক্ষর)"></div>
+        <div class="fg"><label>নিশ্চিত করুন</label><input type="password" id="conP" placeholder="আবার লিখুন"></div>
+        <button class="btn btn-gold" onclick="changePass()">🔐 আপডেট করুন</button>
       </div>
-      <div class="settings-card">
-        <h3>ℹ️ সিস্টেম তথ্য</h3>
+      <div class="form-card">
+        <h3>💡 Thumbnail URL কীভাবে পাবো?</h3>
+        <p style="color:var(--muted);font-size:13px;line-height:1.9">
+          <b style="color:var(--text)">Google Drive:</b> ছবি upload → Share → "Anyone with link" → Copy link<br>
+          <code style="background:#222;padding:2px 6px;border-radius:4px;font-size:11px">https://drive.google.com/uc?id=FILE_ID</code><br><br>
+          <b style="color:var(--text)">ImgBB (সহজ):</b> imgbb.com → upload → Direct link copy করো<br><br>
+          <b style="color:var(--text)">Imgur:</b> imgur.com → upload → .jpg link copy করো
+        </p>
+      </div>
+      <div class="form-card">
+        <h3>ℹ️ সিস্টেম</h3>
         <p style="color:var(--muted);font-size:13px;line-height:2">
           🗄️ Database: Firebase Realtime Database<br>
           🔗 User App: <a href="index.html" target="_blank" style="color:var(--blue)">index.html</a><br>
-          🎬 Supported: YouTube · Google Drive · Direct MP4 · Telegram
+          🖱️ Click → SmartLink / Direct URL open হবে
         </p>
       </div>
     </div>
@@ -249,15 +321,18 @@
 </div>
 
 <!-- EDIT MODAL -->
-<div class="modal-overlay" id="editModal">
+<div class="modal-bg" id="editModal">
   <div class="modal-box">
     <h3>✏️ ভিডিও সম্পাদনা</h3>
-    <input type="hidden" id="editKey">
     <div class="fg"><label>টাইটেল</label><input type="text" id="eTitle"></div>
-    <div class="fg"><label>Video URL</label><input type="url" id="eUrl"></div>
+    <div class="fg">
+      <label>SmartLink / Direct Link</label>
+      <input type="url" id="eLink">
+    </div>
     <div class="fg"><label>Thumbnail URL</label><input type="url" id="eThumb"></div>
-    <div class="fg"><label>Section</label>
-      <select id="eSection">
+    <div class="fg">
+      <label>Section</label>
+      <select id="eSec">
         <option value="popular">⭐ Most Popular</option>
         <option value="today">📅 Today New</option>
         <option value="trending">🔥 Trending</option>
@@ -266,204 +341,236 @@
     <div class="fg"><label>বিবরণ</label><textarea id="eDesc"></textarea></div>
     <div class="fg">
       <label>Badges</label>
-      <div class="cb-group">
+      <div class="cb-row">
         <label class="cb-item"><input type="checkbox" id="eHD"> HD</label>
         <label class="cb-item"><input type="checkbox" id="ePM"> PREMIUM</label>
         <label class="cb-item"><input type="checkbox" id="eNW"> NEW</label>
       </div>
     </div>
-    <div class="modal-actions">
+    <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeEdit()">বাতিল</button>
-      <button class="btn btn-yellow" onclick="saveEdit()">💾 সেভ</button>
+      <button class="btn btn-gold" onclick="saveEdit()">💾 সেভ করুন</button>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toastEl"></div>
 
 <script>
-const PASS_KEY = 'bvh_pass';
-function getPass(){ return localStorage.getItem(PASS_KEY)||'admin123'; }
+const PK = 'bvh_p';
+const getPass = () => localStorage.getItem(PK) || 'admin123';
 
-let allVideos = [];
+let allVids = [];
+let filterSec = 'all';
+let editKey = null;
 
-// ── LOGIN ──
-function doLogin(){
+// LOGIN
+function doLogin() {
   const p = document.getElementById('loginPass').value;
-  if(p === getPass()){
-    document.getElementById('loginScreen').style.display='none';
-    document.getElementById('adminScreen').style.display='block';
-    sessionStorage.setItem('al','1');
-    startListening();
+  if (p === getPass()) {
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('adminWrap').style.display = 'block';
+    sessionStorage.setItem('al', '1');
+    startDB();
   } else {
     const e = document.getElementById('loginErr');
-    e.style.display='block';
-    document.getElementById('loginPass').value='';
-    setTimeout(()=>e.style.display='none',3000);
+    e.style.display = 'block';
+    document.getElementById('loginPass').value = '';
+    setTimeout(() => e.style.display = 'none', 3000);
   }
 }
 
-function doLogout(){ sessionStorage.removeItem('al'); location.reload(); }
+function doLogout() { sessionStorage.removeItem('al'); location.reload(); }
 
-if(sessionStorage.getItem('al')){
-  document.getElementById('loginScreen').style.display='none';
-  document.getElementById('adminScreen').style.display='block';
-  startListening();
+if (sessionStorage.getItem('al')) {
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('adminWrap').style.display = 'block';
+  startDB();
 }
 
-// ── REALTIME LISTENER ──
-function startListening(){
+// FIREBASE LISTENER
+function startDB() {
   db.ref('videos').orderByChild('createdAt').on('value', snap => {
-    allVideos=[];
-    snap.forEach(c=>allVideos.unshift({key:c.key,...c.val()}));
+    allVids = [];
+    snap.forEach(c => allVids.unshift({ key: c.key, ...c.val() }));
     updateStats();
-    renderVideoList();
+    renderList();
   });
 }
 
-function updateStats(){
-  document.getElementById('stTotal').textContent=allVideos.length;
-  document.getElementById('stPop').textContent=allVideos.filter(v=>v.section==='popular').length;
-  document.getElementById('stToday').textContent=allVideos.filter(v=>v.section==='today').length;
-  document.getElementById('stTrend').textContent=allVideos.filter(v=>v.section==='trending').length;
-  document.getElementById('videoCount').textContent=allVideos.length;
+function updateStats() {
+  document.getElementById('stTotal').textContent  = allVids.length;
+  document.getElementById('stPop').textContent    = allVids.filter(v=>v.section==='popular').length;
+  document.getElementById('stToday').textContent  = allVids.filter(v=>v.section==='today').length;
+  document.getElementById('stTrend').textContent  = allVids.filter(v=>v.section==='trending').length;
+  document.getElementById('vCount').textContent   = allVids.length;
 }
 
-function renderVideoList(){
-  const el=document.getElementById('videoList');
-  if(!allVideos.length){el.innerHTML='<p style="color:var(--muted);text-align:center;padding:30px">কোনো ভিডিও নেই</p>';return;}
-  const secLabel={popular:'⭐ Popular',today:'📅 Today',trending:'🔥 Trending'};
-  const secClass={popular:'sec-popular',today:'sec-today',trending:'sec-trending'};
-  el.innerHTML=allVideos.map(v=>{
-    const thumb=v.thumbnail
-      ?`<img src="${v.thumbnail}" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover">`
-      :`🎬`;
-    const badges=[v.isHD&&'HD',v.isPremium&&'PREMIUM',v.isNew&&'NEW'].filter(Boolean).join(' · ')||'—';
-    return `<div class="video-item">
-      <div class="vi-thumb">${thumb}</div>
-      <div class="vi-info">
-        <div class="vi-title">${v.title||'Untitled'}</div>
-        <div class="vi-meta">
-          <span class="sec-badge ${secClass[v.section]||''}">${secLabel[v.section]||v.section}</span>
-          <span style="font-size:11px;color:var(--muted)">${badges}</span>
+// RENDER VIDEO LIST
+function renderList() {
+  const vids = filterSec === 'all' ? allVids : allVids.filter(v => v.section === filterSec);
+  const el = document.getElementById('videoList');
+  if (!vids.length) { el.innerHTML = '<div class="empty-list">কোনো ভিডিও নেই</div>'; return; }
+
+  const sL = { popular:'⭐ Popular', today:'📅 Today', trending:'🔥 Trending' };
+  const sC = { popular:'pill-pop', today:'pill-today', trending:'pill-trend' };
+
+  el.innerHTML = vids.map(v => {
+    const thumb = v.thumbnail
+      ? `<img src="${v.thumbnail}" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover">`
+      : `🎬`;
+    const shortLink = (v.link || '').replace('https://','').slice(0,30) + ((v.link||'').length>30?'...':'');
+    const badges = [v.isHD&&'HD', v.isPremium&&'PM', v.isNew&&'NEW'].filter(Boolean).join(' · ') || '—';
+    return `<div class="v-item">
+      <div class="v-thumb-box">${thumb}</div>
+      <div class="v-info-box">
+        <div class="v-name">${v.title||'Untitled'}</div>
+        <div class="v-meta-row">
+          <span class="sec-pill ${sC[v.section]||''}">${sL[v.section]||v.section}</span>
+          <span style="font-size:10px;color:var(--muted)">${badges}</span>
         </div>
-        <div class="vi-actions">
-          <button class="btn-sm-edit" onclick='openEdit(${JSON.stringify(v)})'>✏️ Edit</button>
-          <button class="btn-sm-del" onclick="delVideo('${v.key}','${(v.title||'').replace(/'/g,'')}')">🗑️ Delete</button>
+        <div class="link-preview">🔗 ${shortLink||'কোনো link নেই'}</div>
+        <div class="v-btns" style="margin-top:6px">
+          <button class="b-edit" onclick='openEdit(${JSON.stringify(v)})'>✏️ Edit</button>
+          <button class="b-del"  onclick="delVid('${v.key}','${(v.title||'').replace(/'/g,'')}')">🗑️ Delete</button>
         </div>
       </div>
     </div>`;
   }).join('');
 }
 
-function loadVideos(){ /* handled by listener */ toast('🔄 লাইভ ডেটা!','ok'); }
-
-// ── ADD ──
-async function quickAdd(){
-  const title=document.getElementById('qTitle').value.trim();
-  const url=document.getElementById('qUrl').value.trim();
-  if(!title||!url){toast('❌ টাইটেল ও URL দিন','err');return;}
-  await pushVideo({title,videoUrl:url,section:document.getElementById('qSection').value,thumbnail:document.getElementById('qThumb').value.trim(),isHD:document.getElementById('qHD').checked,isPremium:document.getElementById('qPM').checked,isNew:document.getElementById('qNW').checked,description:''});
-  document.getElementById('qTitle').value='';
-  document.getElementById('qUrl').value='';
-  document.getElementById('qThumb').value='';
-}
-
-async function addFull(){
-  const title=document.getElementById('aTitle').value.trim();
-  const url=document.getElementById('aUrl').value.trim();
-  if(!title||!url){toast('❌ টাইটেল ও URL দিন','err');return;}
-  await pushVideo({title,videoUrl:url,section:document.getElementById('aSection').value,thumbnail:document.getElementById('aThumb').value.trim(),description:document.getElementById('aDesc').value.trim(),isHD:document.getElementById('aHD').checked,isPremium:document.getElementById('aPM').checked,isNew:document.getElementById('aNW').checked});
-  clearForm();
-}
-
-async function pushVideo(data){
-  try{
-    await db.ref('videos').push({...data,createdAt:firebase.database.ServerValue.TIMESTAMP});
-    toast('✅ ভিডিও সফলভাবে যোগ হয়েছে!','ok');
-  } catch(e){ toast('❌ Error: '+e.message,'err'); }
-}
-
-function clearForm(){
-  ['aTitle','aUrl','aThumb','aDesc'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('aHD').checked=true;
-  document.getElementById('aPM').checked=true;
-  document.getElementById('aNW').checked=false;
-}
-
-// ── DELETE ──
-async function delVideo(key,title){
-  if(!confirm(`"${title}" মুছে ফেলবেন?`))return;
-  try{
-    await db.ref('videos/'+key).remove();
-    toast('🗑️ মুছে ফেলা হয়েছে','ok');
-  }catch(e){toast('❌ Error: '+e.message,'err');}
-}
-
-// ── EDIT ──
-let editKey=null;
-function openEdit(v){
-  editKey=v.key;
-  document.getElementById('eTitle').value=v.title||'';
-  document.getElementById('eUrl').value=v.videoUrl||'';
-  document.getElementById('eThumb').value=v.thumbnail||'';
-  document.getElementById('eSection').value=v.section||'popular';
-  document.getElementById('eDesc').value=v.description||'';
-  document.getElementById('eHD').checked=!!v.isHD;
-  document.getElementById('ePM').checked=!!v.isPremium;
-  document.getElementById('eNW').checked=!!v.isNew;
-  document.getElementById('editModal').classList.add('active');
-}
-
-function closeEdit(){ document.getElementById('editModal').classList.remove('active'); editKey=null; }
-
-async function saveEdit(){
-  if(!editKey)return;
-  try{
-    await db.ref('videos/'+editKey).update({
-      title:document.getElementById('eTitle').value.trim(),
-      videoUrl:document.getElementById('eUrl').value.trim(),
-      thumbnail:document.getElementById('eThumb').value.trim(),
-      section:document.getElementById('eSection').value,
-      description:document.getElementById('eDesc').value.trim(),
-      isHD:document.getElementById('eHD').checked,
-      isPremium:document.getElementById('ePM').checked,
-      isNew:document.getElementById('eNW').checked,
-    });
-    toast('✅ আপডেট সফল!','ok');
-    closeEdit();
-  }catch(e){toast('❌ Error: '+e.message,'err');}
-}
-
-// ── PASSWORD ──
-function changePass(){
-  const cur=document.getElementById('curPass').value;
-  const np=document.getElementById('newPass').value;
-  const cp=document.getElementById('confPass').value;
-  if(cur!==getPass()){toast('❌ বর্তমান পাসওয়ার্ড ভুল','err');return;}
-  if(!np||np.length<4){toast('❌ কমপক্ষে ৪ অক্ষর দিন','err');return;}
-  if(np!==cp){toast('❌ পাসওয়ার্ড মিলছে না','err');return;}
-  localStorage.setItem(PASS_KEY,np);
-  toast('✅ পাসওয়ার্ড পরিবর্তন হয়েছে!','ok');
-  ['curPass','newPass','confPass'].forEach(id=>document.getElementById(id).value='');
-}
-
-// ── TABS ──
-function switchTab(name,btn){
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
+function filterList(sec, btn) {
+  filterSec = sec;
+  document.querySelectorAll('.sf-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
+  renderList();
 }
 
-// ── TOAST ──
-function toast(msg,type){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.className=`toast ${type} show`;
-  setTimeout(()=>t.classList.remove('show'),3000);
+// ADD
+async function quickAdd() {
+  const title = document.getElementById('qTitle').value.trim();
+  const link  = document.getElementById('qLink').value.trim();
+  if (!title || !link) { toast('❌ টাইটেল ও Link দিন', 'err'); return; }
+  await pushVid({
+    title, link,
+    section   : document.getElementById('qSec').value,
+    thumbnail : document.getElementById('qThumb').value.trim(),
+    isHD      : document.getElementById('qHD').checked,
+    isPremium : document.getElementById('qPM').checked,
+    isNew     : document.getElementById('qNW').checked,
+    description: ''
+  });
+  document.getElementById('qTitle').value = '';
+  document.getElementById('qLink').value  = '';
+  document.getElementById('qThumb').value = '';
 }
 
-document.getElementById('editModal').addEventListener('click',e=>{if(e.target.id==='editModal')closeEdit();});
+async function addFull() {
+  const title = document.getElementById('aTitle').value.trim();
+  const link  = document.getElementById('aLink').value.trim();
+  if (!title || !link) { toast('❌ টাইটেল ও Link দিন', 'err'); return; }
+  await pushVid({
+    title, link,
+    section    : document.getElementById('aSec').value,
+    thumbnail  : document.getElementById('aThumb').value.trim(),
+    description: document.getElementById('aDesc').value.trim(),
+    isHD       : document.getElementById('aHD').checked,
+    isPremium  : document.getElementById('aPM').checked,
+    isNew      : document.getElementById('aNW').checked,
+  });
+  clearAdd();
+}
+
+async function pushVid(data) {
+  try {
+    await db.ref('videos').push({ ...data, createdAt: firebase.database.ServerValue.TIMESTAMP });
+    toast('✅ ভিডিও সফলভাবে যোগ হয়েছে!', 'ok');
+  } catch(e) { toast('❌ Error: ' + e.message, 'err'); }
+}
+
+function clearAdd() {
+  ['aTitle','aLink','aThumb','aDesc'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('aHD').checked = true;
+  document.getElementById('aPM').checked = true;
+  document.getElementById('aNW').checked = false;
+}
+
+// DELETE
+async function delVid(key, title) {
+  if (!confirm(`"${title}" মুছে ফেলবেন?`)) return;
+  try {
+    await db.ref('videos/' + key).remove();
+    toast('🗑️ মুছে ফেলা হয়েছে', 'ok');
+  } catch(e) { toast('❌ Error: ' + e.message, 'err'); }
+}
+
+// EDIT
+function openEdit(v) {
+  editKey = v.key;
+  document.getElementById('eTitle').value = v.title || '';
+  document.getElementById('eLink').value  = v.link  || '';
+  document.getElementById('eThumb').value = v.thumbnail || '';
+  document.getElementById('eSec').value   = v.section || 'popular';
+  document.getElementById('eDesc').value  = v.description || '';
+  document.getElementById('eHD').checked  = !!v.isHD;
+  document.getElementById('ePM').checked  = !!v.isPremium;
+  document.getElementById('eNW').checked  = !!v.isNew;
+  document.getElementById('editModal').classList.add('open');
+}
+
+function closeEdit() { document.getElementById('editModal').classList.remove('open'); editKey = null; }
+
+async function saveEdit() {
+  if (!editKey) return;
+  try {
+    await db.ref('videos/' + editKey).update({
+      title      : document.getElementById('eTitle').value.trim(),
+      link       : document.getElementById('eLink').value.trim(),
+      thumbnail  : document.getElementById('eThumb').value.trim(),
+      section    : document.getElementById('eSec').value,
+      description: document.getElementById('eDesc').value.trim(),
+      isHD       : document.getElementById('eHD').checked,
+      isPremium  : document.getElementById('ePM').checked,
+      isNew      : document.getElementById('eNW').checked,
+    });
+    toast('✅ আপডেট সফল!', 'ok');
+    closeEdit();
+  } catch(e) { toast('❌ Error: ' + e.message, 'err'); }
+}
+
+// PASSWORD
+function changePass() {
+  const c = document.getElementById('curP').value;
+  const n = document.getElementById('newP').value;
+  const x = document.getElementById('conP').value;
+  if (c !== getPass()) { toast('❌ বর্তমান পাসওয়ার্ড ভুল', 'err'); return; }
+  if (!n || n.length < 4) { toast('❌ কমপক্ষে ৪ অক্ষর দিন', 'err'); return; }
+  if (n !== x) { toast('❌ পাসওয়ার্ড মিলছে না', 'err'); return; }
+  localStorage.setItem(PK, n);
+  toast('✅ পাসওয়ার্ড পরিবর্তন হয়েছে!', 'ok');
+  ['curP','newP','conP'].forEach(id => document.getElementById(id).value = '');
+}
+
+// TABS
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.t-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'videos') renderList();
+}
+
+// TOAST
+function toast(msg, type) {
+  const el = document.getElementById('toastEl');
+  el.textContent = msg;
+  el.className = `toast ${type} show`;
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+document.getElementById('editModal').addEventListener('click', e => {
+  if (e.target.id === 'editModal') closeEdit();
+});
 </script>
 </body>
 </html>
